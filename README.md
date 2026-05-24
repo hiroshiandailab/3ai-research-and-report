@@ -2,6 +2,8 @@
 
 3AIリサーチと最終レポート作成に特化したブラウザ完結型モックMVPです。
 
+**GitHub:** https://github.com/hiroshiandailab/3ai-research-and-report
+
 ## ローカル起動
 
 ```bash
