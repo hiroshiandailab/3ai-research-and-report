@@ -1,0 +1,224 @@
+# 3AI Research & Report
+
+3AI（ChatGPT / Gemini / Claude）の回答を比較し、ユーザーが採用した重要文から最終レポートを組み立てる **ブラウザ完結型 AI リサーチ作業台** のモック MVP。
+
+- **GitHub:** https://github.com/hiroshiandailab/3ai-research-and-report
+- **Surge（本番）:** https://hiroshi-tsutsumi-202506-3ai_research_and_report.surge.sh/
+- **元プロジェクト:** `research-workbench` のコピー＋ブランディング差分
+
+## 開発環境の引き継ぎ（Cursor ↔ Claude Code）
+
+```text
+Cursor（GitHub push）
+     ↓
+git clone でローカルに取得
+     ↓
+claude → /init で CLAUDE.md 生成（初回のみ。以降は本ファイルを更新）
+     ↓
+CLAUDE.md に作業状況を追記
+     ↓
+Claude Code で開発継続
+```
+
+**初回セットアップ（Claude Code 側）**
+
+```powershell
+git clone https://github.com/hiroshiandailab/3ai-research-and-report.git
+cd 3ai-research-and-report
+npm install
+npm run dev
+# → http://localhost:3000
+```
+
+セッション開始時は **本ファイルの「作業状況」** と **`HANDOFF.md`** を読んでから着手すること。
+
+---
+
+## 絶対守ること
+
+- **既存 Surge URL へデプロイしない:** https://hiroshi-tsutsumi-202605-workspace.surge.sh/（`research-workbench` 用）
+- 本リポジトリのデプロイ先は **新 URL のみ:** `hiroshi-tsutsumi-202506-3ai_research_and_report.surge.sh`
+- **API 未接続** — AI 応答は `src/lib/research-mock-ai.ts` のダミー。本番 API 連携は別タスク
+- 変更は **最小スコープ** — 依頼外のリファクタ・UI 全面変更・依存追加はしない
+- PowerShell では `&&` 不可 → `;` を使う
+
+---
+
+## 技術スタック
+
+| 項目 | 内容 |
+|------|------|
+| Framework | Next.js 15（App Router） |
+| Language | TypeScript |
+| UI | Tailwind CSS + shadcn/ui |
+| 出力 | 静的エクスポート（`output: "export"` → `./out`） |
+| 状態 | React state + localStorage（`research-storage.ts`） |
+| Node | `npm install` 後 `npm run dev` / `npm run build` |
+
+---
+
+## コマンド
+
+```powershell
+npm run dev      # 開発サーバー http://localhost:3000
+npm run build    # 静的ビルド → ./out
+npm run lint     # ESLint
+npm run deploy   # build + Surge（新 URL のみ）
+```
+
+---
+
+## ディレクトリ構成
+
+```text
+src/
+  app/
+    layout.tsx              # metadata: 3AI Research & Report
+    page.tsx                # ResearchWorkbench を表示
+    globals.css             # テーマ変数（青グレー研究ノート風）
+  components/
+    research-workbench.tsx  # メイン UI（3ステップ・ヘッダー）★最重要
+    ai-reports-modal.tsx    # 3AI モーダル（タブ: ChatGPT/Gemini/Claude/Compare）
+    research-card-item.tsx  # カード（compact 対応）
+    ui/                     # shadcn 部品
+  hooks/
+    use-research-workbench.ts  # 状態・ダミー Research・採用・反映
+  lib/
+    research-brief.ts       # Art プレースホルダー等
+    research-mock-ai.ts     # ダミー 3AI 本文
+    research-markdown.ts    # Markdown 出力
+    research-storage.ts     # localStorage
+  types/
+    research.ts             # WorkspaceState, WORKFLOW_STEPS, BOARD_PANELS
+```
+
+**編集頻度が高いファイル:** `research-workbench.tsx`, `use-research-workbench.ts`, `ai-reports-modal.tsx`
+
+---
+
+## 画面構成（3ステップ）
+
+### STEP 1 — AIレポートを見る
+
+- **リサーチ対象:** `[Art]` `[Academic]` `[Business]` — 初期選択 **Art**
+- **Main Question** — Art 時プレースホルダー:
+  `この情報は、ひろしのAIクリエイター活動・Genmapping・作品制作にどう役立つか？`
+- ボタン（縦並び・右列）:
+  - `[Research]` — 青 `#2563EB`
+  - `[3AIレポートを開く]` — 黒 `#0F172A` / 白文字
+- Markdown 生成は **STEP 3 のみ**
+
+### STEP 2 — 重要文を採用する
+
+- レイアウト: `9fr 3fr`（PC）/ モバイル縦並び
+- 左: **AI共通まとめ**（75%）— カード選択可
+- 右: **採用する重要文**（25%）— Textarea で手入力追記可
+- 右下: **`[選択文を採用する]`** — 青
+
+### STEP 3 — 最終レポートを作る
+
+- 最終レポート本文（Textarea）
+- 右下ボタン（この順）:
+  1. **`[最終本文を作成]`** — 採用 B 層文を本文へ反映
+  2. **`[Markdown生成]`** — コピー + ダウンロード（緑 `#0F766E`）
+
+### 3AIレポートモーダル
+
+- タブ: ChatGPT / Gemini / Claude / Compare
+- **`[共通点をAI共通まとめへ反映]`** + `[閉じる]`
+
+---
+
+## データモデル（内部）
+
+| 層 | UI 表示名 | 用途 |
+|----|-----------|------|
+| A | AI共通まとめ | 3AI 共通点・整理メモ |
+| B | 採用する重要文 | ユーザーが残す文 |
+| C | （内部） | 最終レポート・検証案関連 |
+
+- `mode`: `ART` | `ACADEMIC` | `BUSINESS`（デフォルト **ART**）
+- `lockProfile`: `FULL` | `LITE`（UI から削除済み、state は残存）
+
+---
+
+## デザイン方針
+
+- 白基調 + 薄い青グレー（研究ノート風）— **黒背景 UI に戻さない**
+- 背景 `#F5F8FB` / カード白 / ボーダー `#D8E2EC` / 本文 `#0F172A` / 補助 `#64748B`
+- 既存コンポーネント・Tailwind クラスの命名に合わせる
+
+---
+
+## コード生成ルール
+
+- JSX で `<motion>` 等の誤タグを書かない（`<div>` を使う）
+- shadcn 部品が使える箇所で自前 div に置き換えない
+- 日本語 UI 文言はユーザー指定がある場合のみ変更
+- ビルド確認: `npm run build`（静的 export エラーに注意）
+- `.env*` はコミットしない
+
+---
+
+## 関連プロジェクト（混同注意）
+
+| 名称 | ローカル | Surge | GitHub |
+|------|----------|-------|--------|
+| **本リポジトリ** | `3ai-research-and-report` | 202506-3ai（新） | hiroshiandailab/3ai-research-and-report |
+| Research Workbench（既存） | `research-workbench` | 202605-workspace（**触らない**） | 別管理 |
+| 月次レポート（図解） | `personal-workspace-report` | 202605-personal-workspace | 静的 HTML のみ |
+
+---
+
+## 作業状況
+
+**最終更新:** 2026-05-29  
+**担当:** Cursor で UI/MVP 完成 → Claude Code へ引き継ぎ可能な状態
+
+### 完了済み
+
+- [x] 3ステップ UI（STEP1 入力 → STEP2 採用 → STEP3 最終レポート）
+- [x] リサーチ対象 Art / Academic / Business（Art デフォルト）
+- [x] 3AI モーダル（ダミー）・Compare → AI共通まとめ反映
+- [x] STEP2 9:3 グリッド・採用 Textarea・「選択文を採用する」
+- [x] STEP3「最終本文を作成」+「Markdown生成」
+- [x] ライトテーマ（研究ノート風）・静的 export・Surge deploy スクリプト
+- [x] GitHub リポジトリ作成・初回 push（`main`）
+- [x] `HANDOFF.md` 引き継ぎメモ
+- [x] **本ファイル `CLAUDE.md` 作成**（Claude Code 用）
+
+### 未着手 / 要確認
+
+- [ ] 新 Surge URL への本番デプロイが最新か確認（`npm run deploy`）
+- [ ] 本番 API（OpenAI / Gemini / Claude）接続
+- [ ] `research-workbench` との同期方針（凍結 vs マージ）
+- [ ] GitHub Pages / Vercel 等の検討（現状 Surge 前提）
+
+### 直近の作業メモ（Cursor 側）
+
+- 月次課題レポート（`personal-workspace-report`）は別 Surge URL。アプリ本体とは独立
+- レポート用キャプチャは `C:\Users\h\Desktop\My-First-Project\images\Research Workbench.png`
+- `gh` CLI の winget インストールは失敗履歴あり。repo 作成は git credential + API で実施済み
+
+### Claude Code で作業を始めるとき
+
+1. `git pull origin main` で最新を取得
+2. 本セクション「作業状況」と `HANDOFF.md` を確認
+3. 着手前に `npm run dev` で画面を確認
+4. 作業後は **本セクションを更新** してから commit / push
+5. Cursor 側は `git pull` で CLAUDE.md の更新を取り込む
+
+---
+
+## 既知の注意・過去トラブル
+
+- JSX `<motion>`  typo → ビルド失敗
+- `research-card-item.tsx` の文字化け → ファイル再作成で解消済み
+- `.tools/gh` はローカル用（`.gitignore` 済み）
+
+---
+
+## 参照
+
+- 詳細引き継ぎ: [`HANDOFF.md`](./HANDOFF.md)
+- 起動・デプロイ: [`README.md`](./README.md)

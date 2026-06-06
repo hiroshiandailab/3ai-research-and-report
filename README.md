@@ -30,3 +30,15 @@ npm run deploy
 ```
 
 公開先: https://hiroshi-tsutsumi-202506-3ai_research_and_report.surge.sh/
+
+## Claude Code で開発する
+
+```powershell
+git clone https://github.com/hiroshiandailab/3ai-research-and-report.git
+cd 3ai-research-and-report
+npm install
+npm run dev
+```
+
+プロジェクトの文脈・作業状況・制約は **[CLAUDE.md](./CLAUDE.md)** を参照。  
+Cursor ↔ Claude Code の引き継ぎ手順も同ファイルに記載。
