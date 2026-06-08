@@ -172,8 +172,8 @@ src/
 
 ## 作業状況
 
-**最終更新:** 2026-05-29  
-**担当:** Cursor で UI/MVP 完成 → Claude Code へ引き継ぎ可能な状態
+**最終更新:** 2026-06-09  
+**担当:** Claude Code（第4回グループセッション対応）
 
 ### 完了済み
 
@@ -186,10 +186,24 @@ src/
 - [x] GitHub リポジトリ作成・初回 push（`main`）
 - [x] `HANDOFF.md` 引き継ぎメモ
 - [x] **本ファイル `CLAUDE.md` 作成**（Claude Code 用）
+- [x] モック構成の整理・把握（`research-mock-ai.ts` / `use-research-workbench.ts` / `types/research.ts`）
+- [x] **第4回グループセッション 図解ページ作成・Surge デプロイ**
+  - URL: https://hiroshi-tsutsumi-202606-3aireport-databese.surge.sh/
+  - ローカル: `C:\Users\h\src\3aireport-database-site\index.html`（独立した静的 HTML）
+  - 内容: 製品名変更・3STEP概要・保存先フロー・保存理由・ファイル形式まとめ
 
 ### 未着手 / 要確認
 
-- [ ] 新 Surge URL への本番デプロイが最新か確認（`npm run deploy`）
+- [ ] 新 Surge URL（`202506-3ai_research_and_report`）への最新デプロイ確認（`npm run deploy`）
+- [ ] **STEP3 `[最終本文を作成]` → Google Drive 保存の実装**
+  - 形式: `.docx`（Word）
+  - 手段: GAS（Google Apps Script）で直接書き込み
+  - 目的: NotebookLM 連携
+- [ ] **STEP3 `[Markdown生成]` → GitHub 保存の実装**
+  - 形式: `.md`
+  - 手段: GitHub REST API + PAT（ユーザーが localStorage に設定）
+  - 保存先: `hiroshiandailab/3ai-research-and-report`
+  - 目的: 変更履歴の追跡・バージョン管理
 - [ ] 本番 API（OpenAI / Gemini / Claude）接続
 - [ ] `research-workbench` との同期方針（凍結 vs マージ）
 - [ ] GitHub Pages / Vercel 等の検討（現状 Surge 前提）
@@ -199,6 +213,13 @@ src/
 - 月次課題レポート（`personal-workspace-report`）は別 Surge URL。アプリ本体とは独立
 - レポート用キャプチャは `C:\Users\h\Desktop\My-First-Project\images\Research Workbench.png`
 - `gh` CLI の winget インストールは失敗履歴あり。repo 作成は git credential + API で実施済み
+
+### 第4回グループセッション 設計決定事項（2026-06-09）
+
+| ボタン | 形式 | 保存先 | 手段 | 目的 |
+|--------|------|--------|------|------|
+| `[最終本文を作成]` | `.docx` | Google Drive | GAS | NotebookLM 連携 |
+| `[Markdown生成]` | `.md` | GitHub | REST API + PAT | 変更履歴の追跡 |
 
 ### Claude Code で作業を始めるとき
 
