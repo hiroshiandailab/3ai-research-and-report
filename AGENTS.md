@@ -1,26 +1,26 @@
 # 3AI Research & Report
 
-3AI（ChatGPT / Gemini / Claude）の回答を比較し、ユーザーが採用した重要文から最終レポートを組み立てる **ブラウザ完結型 AI リサーチ作業台** のモック MVP。
+3AI（ChatGPT / Gemini / Codex）の回答を比較し、ユーザーが採用した重要文から最終レポートを組み立てる **ブラウザ完結型 AI リサーチ作業台** のモック MVP。
 
 - **GitHub:** https://github.com/hiroshiandailab/3ai-research-and-report
 - **Surge（本番）:** https://hiroshi-tsutsumi-202506-3ai-research-and-report.surge.sh/
 - **元プロジェクト:** `research-workbench` のコピー＋ブランディング差分
 
-## 開発環境の引き継ぎ（Cursor ↔ Claude Code）
+## 開発環境の引き継ぎ（Cursor ↔ Codex）
 
 ```text
 Cursor（GitHub push）
      ↓
 git clone でローカルに取得
      ↓
-claude → /init で CLAUDE.md 生成（初回のみ。以降は本ファイルを更新）
+Codex → /init で AGENTS.md 生成（初回のみ。以降は本ファイルを更新）
      ↓
-CLAUDE.md に作業状況を追記
+AGENTS.md に作業状況を追記
      ↓
-Claude Code で開発継続
+Codex で開発継続
 ```
 
-**初回セットアップ（Claude Code 側）**
+**初回セットアップ（Codex 側）**
 
 ```powershell
 git clone https://github.com/hiroshiandailab/3ai-research-and-report.git
@@ -78,7 +78,7 @@ src/
     globals.css             # テーマ変数（青グレー研究ノート風）
   components/
     research-workbench.tsx  # メイン UI（3ステップ・ヘッダー）★最重要
-    ai-reports-modal.tsx    # 3AI モーダル（タブ: ChatGPT/Gemini/Claude/Compare）
+    ai-reports-modal.tsx    # 3AI モーダル（タブ: ChatGPT/Gemini/Codex/Compare）
     research-card-item.tsx  # カード（compact 対応）
     ui/                     # shadcn 部品
   hooks/
@@ -124,7 +124,7 @@ src/
 
 ### 3AIレポートモーダル
 
-- タブ: ChatGPT / Gemini / Claude / Compare
+- タブ: ChatGPT / Gemini / Codex / Compare
 - **`[共通点をAI共通まとめへ反映]`** + `[閉じる]`
 
 ---
@@ -172,8 +172,8 @@ src/
 
 ## 作業状況
 
-**最終更新:** 2026-06-09  
-**担当:** Claude Code（第4回グループセッション対応）
+**最終更新:** 2026-06-19  
+**担当:** Codex
 
 ### 完了済み
 
@@ -185,17 +185,20 @@ src/
 - [x] ライトテーマ（研究ノート風）・静的 export・Surge deploy スクリプト
 - [x] GitHub リポジトリ作成・初回 push（`main`）
 - [x] `HANDOFF.md` 引き継ぎメモ
-- [x] **本ファイル `CLAUDE.md` 作成**（Claude Code 用）
+- [x] **本ファイル `AGENTS.md` 作成**（Codex 用）
 - [x] モック構成の整理・把握（`research-mock-ai.ts` / `use-research-workbench.ts` / `types/research.ts`）
 - [x] **第4回グループセッション 図解ページ作成・Surge デプロイ**
   - URL: https://hiroshi-tsutsumi-202606-3aireport-databese.surge.sh/
   - ローカル: `C:\Users\h\src\3aireport-database-site\index.html`（独立した静的 HTML）
   - 内容: 製品名変更・3STEP概要・保存先フロー・保存理由・ファイル形式まとめ
+- [x] 本番 Surge URL を有効なホスト名へ修正
+  - 旧: `hiroshi-tsutsumi-202506-3ai_research_and_report.surge.sh`（アンダースコアを含むため使用不可）
+  - 新: `hiroshi-tsutsumi-202506-3ai-research-and-report.surge.sh`
+- [x] 新 Surge URL へ最新ビルドをデプロイし、PC・スマートフォン表示を確認
+- [x] STEP 2 と STEP 3 の重なりを解消し、ページ全体を縦スクロール表示へ修正
 
 ### 未着手 / 要確認
 
-- [x] 新 Surge URL（`202506-3ai-research-and-report`）へ最新デプロイ・表示確認
-- [x] STEP 2 と STEP 3 の重なりを解消し、縦スクロール表示へ修正
 - [ ] **STEP3 `[最終本文を作成]` → Google Drive 保存の実装**
   - 形式: `.docx`（Word）
   - 手段: GAS（Google Apps Script）で直接書き込み
@@ -205,7 +208,7 @@ src/
   - 手段: GitHub REST API + PAT（ユーザーが localStorage に設定）
   - 保存先: `hiroshiandailab/3ai-research-and-report`
   - 目的: 変更履歴の追跡・バージョン管理
-- [ ] 本番 API（OpenAI / Gemini / Claude）接続
+- [ ] 本番 API（OpenAI / Gemini / Codex）接続
 - [ ] `research-workbench` との同期方針（凍結 vs マージ）
 - [ ] GitHub Pages / Vercel 等の検討（現状 Surge 前提）
 
@@ -222,13 +225,13 @@ src/
 | `[最終本文を作成]` | `.docx` | Google Drive | GAS | NotebookLM 連携 |
 | `[Markdown生成]` | `.md` | GitHub | REST API + PAT | 変更履歴の追跡 |
 
-### Claude Code で作業を始めるとき
+### Codex で作業を始めるとき
 
 1. `git pull origin main` で最新を取得
 2. 本セクション「作業状況」と `HANDOFF.md` を確認
 3. 着手前に `npm run dev` で画面を確認
 4. 作業後は **本セクションを更新** してから commit / push
-5. Cursor 側は `git pull` で CLAUDE.md の更新を取り込む
+5. Cursor 側は `git pull` で AGENTS.md の更新を取り込む
 
 ---
 

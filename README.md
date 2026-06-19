@@ -29,7 +29,7 @@ npm run build
 npm run deploy
 ```
 
-公開先: https://hiroshi-tsutsumi-202506-3ai_research_and_report.surge.sh/
+公開先: https://hiroshi-tsutsumi-202506-3ai-research-and-report.surge.sh/
 
 ## Claude Code で開発する
 

@@ -294,7 +294,7 @@ export function ResearchWorkbench() {
   }
 
   return (
-    <div className="flex h-dvh flex-col overflow-hidden bg-[#F5F8FB]">
+    <div className="min-h-dvh bg-[#F5F8FB]">
       <AiReportsModal
         open={reportsOpen}
         onOpenChange={setReportsOpen}
@@ -439,9 +439,9 @@ export function ResearchWorkbench() {
         </div>
       </section>
 
-      <div className="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col gap-5 px-6 py-5">
+      <main className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-6">
         {/* STEP 2 */}
-        <section className="flex min-h-0 flex-[1.2] flex-col gap-3">
+        <section className="flex flex-col gap-3">
           <StepHeader
             step={WORKFLOW_STEPS[1].step}
             label={WORKFLOW_STEPS[1].label}
@@ -452,7 +452,7 @@ export function ResearchWorkbench() {
             }
           />
 
-          <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 md:grid-cols-[9fr_3fr]">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-[9fr_3fr]">
             <SummaryPanel
               variant="main"
               title={BOARD_PANELS.A.title}
@@ -496,15 +496,15 @@ export function ResearchWorkbench() {
         </section>
 
         {/* STEP 3 */}
-        <section className="mt-3 flex min-h-0 flex-1 flex-col gap-4 pt-2">
+        <section className="flex flex-col gap-4">
           <StepHeader
             step={WORKFLOW_STEPS[2].step}
             label={WORKFLOW_STEPS[2].label}
             guide={WORKFLOW_STEPS[2].guide}
           />
 
-          <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-[#D8E2EC] bg-white shadow-[var(--rw-shadow)]">
-            <div className="flex min-h-0 flex-1 flex-col p-4">
+          <div className="flex min-h-[260px] flex-col overflow-hidden rounded-xl border border-[#D8E2EC] bg-white shadow-[var(--rw-shadow)]">
+            <div className="flex flex-1 flex-col p-4">
               <Textarea
                 ref={finalReportRef}
                 value={state.finalReport}
@@ -554,7 +554,7 @@ export function ResearchWorkbench() {
             </div>
           </div>
         </section>
-      </div>
+      </main>
 
       <footer className="shrink-0 border-t border-[#D8E2EC] bg-white/80 px-6 py-2">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-3 gap-y-1 text-[10px] text-[#94A3B8]">

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "npm run build && npx surge@latest ./out hiroshi-tsutsumi-202506-3ai_research_and_report.surge.sh"
+    "deploy": "npm run build && npx surge@latest ./out hiroshi-tsutsumi-202506-3ai-research-and-report.surge.sh"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",

@@ -11,7 +11,7 @@
 |------|---------------------------|-----------------------------------|
 | ローカルパス | `C:\Users\h\src\research-workbench` | `C:\Users\h\src\3ai-research-and-report` |
 | 画面タイトル | Research Workbench | **3AI Research & Report** |
-| Surge URL | https://hiroshi-tsutsumi-202605-workspace.surge.sh/ | https://hiroshi-tsutsumi-202506-3ai_research_and_report.surge.sh/（**新URLのみ**） |
+| Surge URL | https://hiroshi-tsutsumi-202605-workspace.surge.sh/ | https://hiroshi-tsutsumi-202506-3ai-research-and-report.surge.sh/（**新URLのみ**） |
 | GitHub | （未確認・別管理の可能性） | https://github.com/hiroshiandailab/3ai-research-and-report |
 | 関係 | 元プロジェクト | `research-workbench` のコピー＋ブランディング差分 |
 
@@ -142,7 +142,7 @@ npm run build
 # → ./out
 
 # Surge（新URLのみ）
-npx surge ./out hiroshi-tsutsumi-202506-3ai_research_and_report.surge.sh
+npx surge ./out hiroshi-tsutsumi-202506-3ai-research-and-report.surge.sh
 # または
 npm run deploy
 ```
@@ -208,7 +208,7 @@ git push origin main
 | 名称 | URL / パス |
 |------|------------|
 | 既存 Surge | https://hiroshi-tsutsumi-202605-workspace.surge.sh/ |
-| 新 Surge（予定） | https://hiroshi-tsutsumi-202506-3ai_research_and_report.surge.sh/ |
+| 新 Surge | https://hiroshi-tsutsumi-202506-3ai-research-and-report.surge.sh/ |
 | GitHub | https://github.com/hiroshiandailab/3ai-research-and-report |
 | ローカル（3ai） | `C:\Users\h\src\3ai-research-and-report` |
 | ローカル（既存） | `C:\Users\h\src\research-workbench` |
