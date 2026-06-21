@@ -1,6 +1,8 @@
 "use client";
 
+import { LogOut } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
+import { signOutAction } from "@/app/actions/auth";
 import { AiReportsModal } from "@/components/ai-reports-modal";
 import { ResearchCardItem } from "@/components/research-card-item";
 import { Badge } from "@/components/ui/badge";
@@ -170,7 +172,7 @@ function AdoptedSentencesPanel({
   );
 }
 
-export function ResearchWorkbench() {
+export function ResearchWorkbench({ userEmail }: { userEmail: string }) {
   const {
     state,
     hydrated,
@@ -315,12 +317,32 @@ export function ResearchWorkbench() {
                 複数AIの回答を比較し、自分が重要だと判断した情報を採用し、最終レポートへ整理するAIリサーチ作業台
               </p>
             </div>
-            <Badge
-              variant="outline"
-              className="shrink-0 border-[#D8E2EC] bg-[#EAF2F8] font-normal text-[#334155]"
-            >
-              DRAFT
-            </Badge>
+            <div className="flex shrink-0 items-center gap-2">
+              <span
+                className="hidden max-w-48 truncate text-xs text-[#64748B] sm:inline"
+                title={userEmail}
+              >
+                {userEmail}
+              </span>
+              <Badge
+                variant="outline"
+                className="border-[#D8E2EC] bg-[#EAF2F8] font-normal text-[#334155]"
+              >
+                DRAFT
+              </Badge>
+              <form action={signOutAction}>
+                <Button
+                  type="submit"
+                  variant="ghost"
+                  size="icon-sm"
+                  title="ログアウト"
+                  aria-label="ログアウト"
+                  className="text-[#64748B] hover:text-[#0F172A]"
+                >
+                  <LogOut aria-hidden />
+                </Button>
+              </form>
+            </div>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-3">

@@ -25,11 +25,12 @@
 
 ## 2. 技術スタック
 
-- **Next.js 15**（App Router）+ **TypeScript**
+- **Next.js 15.5**（App Router / Server）+ **TypeScript**
 - **Tailwind CSS** + **shadcn/ui**
-- **静的エクスポート**: `next.config.ts` → `output: "export"` → 成果物 `./out`
+- **認証**: Auth.js + Google OAuth + `AUTH_ALLOWED_EMAILS`
+- **本番方針**: Vercel（Surge版はモックとして凍結）
 - **状態**: ブラウザのみ（localStorage）、**API 接続なし**（ダミー AI）
-- **Node**: `npm install` → `npm run dev`（開発） / `npm run build`（`./out` 生成）
+- **Node**: `npm install` → `npm run dev`（開発） / `npm run build`（サーバー版ビルド）
 
 ---
 
@@ -137,14 +138,15 @@ cd C:\Users\h\src\3ai-research-and-report
 npm run dev
 # → http://localhost:3000
 
-# ビルド
+# ビルド（サーバー版）
 npm run build
-# → ./out
+```
 
-# Surge（新URLのみ）
-npx surge ./out hiroshi-tsutsumi-202506-3ai-research-and-report.surge.sh
-# または
-npm run deploy
+Google OAuth callback:
+
+```text
+http://localhost:3000/api/auth/callback/google
+https://<Vercel本番ドメイン>/api/auth/callback/google
 ```
 
 ### GitHub
@@ -187,10 +189,11 @@ git push origin main
 
 ## 10. 次にやりそうなこと（未確定）
 
-- [ ] 新 Surge URL へのデプロイ確認（未デプロイなら `npm run deploy`）
+- [x] Surgeモック版へのデプロイ確認
+- [ ] Vercel本番プロジェクトの作成・公開（第7段階）
 - [ ] 本番 API（OpenAI / Gemini / Claude）接続
 - [ ] `research-workbench` 側を 3ai と同期するか、レガシーとして凍結するか方針決定
-- [ ] GitHub Pages / Vercel 等の検討（現状 Surge 前提）
+- [ ] Vercel本番プロジェクトの作成・環境変数設定（第7段階）
 
 ---
 

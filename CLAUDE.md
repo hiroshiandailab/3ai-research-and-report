@@ -3,7 +3,7 @@
 3AI（ChatGPT / Gemini / Claude）の回答を比較し、ユーザーが採用した重要文から最終レポートを組み立てる **ブラウザ完結型 AI リサーチ作業台** のモック MVP。
 
 - **GitHub:** https://github.com/hiroshiandailab/3ai-research-and-report
-- **Surge（本番）:** https://hiroshi-tsutsumi-202506-3ai-research-and-report.surge.sh/
+- **Surge（モック版）:** https://hiroshi-tsutsumi-202506-3ai-research-and-report.surge.sh/
 - **元プロジェクト:** `research-workbench` のコピー＋ブランディング差分
 
 ## 開発環境の引き継ぎ（Cursor ↔ Claude Code）
@@ -37,8 +37,9 @@ npm run dev
 ## 絶対守ること
 
 - **既存 Surge URL へデプロイしない:** https://hiroshi-tsutsumi-202605-workspace.surge.sh/（`research-workbench` 用）
-- 本リポジトリのデプロイ先は **新 URL のみ:** `hiroshi-tsutsumi-202506-3ai-research-and-report.surge.sh`
-- **API 未接続** — AI 応答は `src/lib/research-mock-ai.ts` のダミー。本番 API 連携は別タスク
+- Surge版はモックとして凍結し、**今後は再デプロイしない**
+- 本番公開先は第7段階で作成するVercelプロジェクト
+- **AI API 未接続** — AI 応答は `src/lib/research-mock-ai.ts` のダミー。本番 AI API 連携は第2段階
 - 変更は **最小スコープ** — 依頼外のリファクタ・UI 全面変更・依存追加はしない
 - PowerShell では `&&` 不可 → `;` を使う
 
@@ -48,11 +49,12 @@ npm run dev
 
 | 項目 | 内容 |
 |------|------|
-| Framework | Next.js 15（App Router） |
+| Framework | Next.js 15.5（App Router / Server） |
 | Language | TypeScript |
 | UI | Tailwind CSS + shadcn/ui |
-| 出力 | 静的エクスポート（`output: "export"` → `./out`） |
+| 実行 | Vercel向けサーバーレンダリング + Route Handlers |
 | 状態 | React state + localStorage（`research-storage.ts`） |
+| 認証 | Auth.js + Google OAuth + 許可メール |
 | Node | `npm install` 後 `npm run dev` / `npm run build` |
 
 ---
@@ -61,9 +63,9 @@ npm run dev
 
 ```powershell
 npm run dev      # 開発サーバー http://localhost:3000
-npm run build    # 静的ビルド → ./out
+npm run build    # サーバー版の本番ビルド
 npm run lint     # ESLint
-npm run deploy   # build + Surge（新 URL のみ）
+npm run start    # 本番ビルドをローカル起動
 ```
 
 ---
@@ -172,7 +174,7 @@ src/
 
 ## 作業状況
 
-**最終更新:** 2026-06-09  
+**最終更新:** 2026-06-22
 **担当:** Claude Code（第4回グループセッション対応）
 
 ### 完了済み
@@ -196,6 +198,8 @@ src/
 
 - [x] 新 Surge URL（`202506-3ai-research-and-report`）へ最新デプロイ・表示確認
 - [x] STEP 2 と STEP 3 の重なりを解消し、縦スクロール表示へ修正
+- [x] 第1段階: Next.jsサーバー化・Auth.js Google認証・許可メール制限
+- [x] Next.jsを脆弱性修正版 `15.5.19` へ更新
 - [ ] **STEP3 `[最終本文を作成]` → Google Drive 保存の実装**
   - 形式: `.docx`（Word）
   - 手段: GAS（Google Apps Script）で直接書き込み
