@@ -96,3 +96,6 @@ npm run start
 3AIの共通点・相違点と出典統合は第3段階で実装します。
 
 詳細な作業状況は [AGENTS.md](./AGENTS.md) と [HANDOFF.md](./HANDOFF.md) を参照してください。
+
+APIキーの安全な取得・保存・Vercel設定は
+[docs/API_KEY_SETUP.md](./docs/API_KEY_SETUP.md)を参照してください。

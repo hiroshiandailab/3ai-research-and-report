@@ -215,6 +215,14 @@ src/
   - 3社を並列実行し、部分失敗時も成功レポートを保持
   - モックへの自動フォールバックを廃止
   - APIキー・モデル名をサーバー環境変数化
+- [x] **APIキー漏えい防止**
+  - `.env.local`をGit管理外に維持
+  - AI接続モジュールを`server-only`化
+  - `NEXT_PUBLIC_*_API_KEY`を禁止
+  - API応答を`private, no-store`化
+  - 外部向けエラーからSDK詳細を除去
+  - `npm run check:secrets`を追加
+  - 設定手順: `docs/API_KEY_SETUP.md`
 
 ### 未着手 / 要確認
 

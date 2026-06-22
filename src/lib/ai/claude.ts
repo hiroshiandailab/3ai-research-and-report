@@ -1,5 +1,8 @@
+import "server-only";
+
 import Anthropic from "@anthropic-ai/sdk";
 import { buildResearchPrompt } from "@/lib/ai/prompt";
+import { requireSecret } from "@/lib/server/env";
 import type { ProviderResearchResult } from "@/types/research-api";
 import type { ResearchMode } from "@/types/research";
 
@@ -9,12 +12,8 @@ export async function researchWithClaude(
   brief: string,
   mode: ResearchMode,
 ): Promise<ProviderResearchResult> {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = requireSecret("ANTHROPIC_API_KEY");
   const model = process.env.ANTHROPIC_MODEL || DEFAULT_MODEL;
-
-  if (!apiKey) {
-    throw new Error("ANTHROPIC_API_KEYが設定されていません");
-  }
 
   const client = new Anthropic({ apiKey, timeout: 120_000 });
   const response = await client.messages.create({

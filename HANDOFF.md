@@ -31,6 +31,7 @@
 - **本番方針**: Vercel（Surge版はモックとして凍結）
 - **状態**: UI状態はlocalStorage、3AI実行は認証済みサーバーAPI
 - **3AI**: OpenAI Responses + Web Search / Claude Messages + Web Search / Gemini + Google Search
+- **秘密情報**: `.env.local` / Vercel Sensitive変数のみ。`NEXT_PUBLIC_*_API_KEY`は禁止
 - **Node**: `npm install` → `npm run dev`（開発） / `npm run build`（サーバー版ビルド）
 
 ---

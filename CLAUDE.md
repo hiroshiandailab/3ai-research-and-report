@@ -201,6 +201,7 @@ src/
 - [x] 第1段階: Next.jsサーバー化・Auth.js Google認証・許可メール制限
 - [x] Next.jsを脆弱性修正版 `15.5.19` へ更新
 - [x] 第2段階: OpenAI / Claude / Gemini本番APIアダプターと認証済み`/api/research`
+- [x] APIキー漏えい防止（server-only / no-store / 公開変数禁止 / secrets検査）
 - [ ] 3社のAPIキー設定とライブ通信確認
 - [ ] 第3段階: 3AI比較・出典統合
 - [ ] **STEP3 `[最終本文を作成]` → Google Drive 保存の実装**
