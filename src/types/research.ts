@@ -4,7 +4,7 @@ export type CardLayer = "A" | "B" | "C";
 export type CardStatus = "adopted" | "pending" | "rejected";
 export type SourceTool = "chatgpt" | "gemini" | "claude" | "notebooklm" | "manual";
 export type AiToolId = "chatgpt" | "gemini" | "claude";
-export type RunState = "idle" | "running" | "done";
+export type RunState = "idle" | "running" | "done" | "error";
 
 export interface ResearchCard {
   id: string;

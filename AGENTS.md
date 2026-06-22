@@ -1,6 +1,6 @@
 # 3AI Research & Report
 
-3AI（ChatGPT / Gemini / Codex）の回答を比較し、ユーザーが採用した重要文から最終レポートを組み立てる **ブラウザ完結型 AI リサーチ作業台** のモック MVP。
+3AI（ChatGPT / Claude / Gemini）の回答を比較し、ユーザーが採用した重要文から最終レポートを組み立てる AI リサーチ作業台。
 
 - **GitHub:** https://github.com/hiroshiandailab/3ai-research-and-report
 - **Surge（モック版）:** https://hiroshi-tsutsumi-202506-3ai-research-and-report.surge.sh/
@@ -39,7 +39,7 @@ npm run dev
 - **既存 Surge URL へデプロイしない:** https://hiroshi-tsutsumi-202605-workspace.surge.sh/（`research-workbench` 用）
 - Surge版はモックとして凍結し、**今後は再デプロイしない**
 - 本番公開先は第7段階で作成するVercelプロジェクト
-- **AI API 未接続** — AI 応答は `src/lib/research-mock-ai.ts` のダミー。本番 AI API 連携は第2段階
+- **3AI接続コード実装済み** — APIキー設定とライブ通信確認は要対応
 - 変更は **最小スコープ** — 依頼外のリファクタ・UI 全面変更・依存追加はしない
 - PowerShell では `&&` 不可 → `;` を使う
 
@@ -80,14 +80,15 @@ src/
     globals.css             # テーマ変数（青グレー研究ノート風）
   components/
     research-workbench.tsx  # メイン UI（3ステップ・ヘッダー）★最重要
-    ai-reports-modal.tsx    # 3AI モーダル（タブ: ChatGPT/Gemini/Codex/Compare）
+    ai-reports-modal.tsx    # 3AI モーダル（タブ: ChatGPT/Gemini/Claude/Compare）
     research-card-item.tsx  # カード（compact 対応）
     ui/                     # shadcn 部品
   hooks/
     use-research-workbench.ts  # 状態・ダミー Research・採用・反映
   lib/
+    ai/                     # OpenAI / Claude / Gemini本番アダプター
     research-brief.ts       # Art プレースホルダー等
-    research-mock-ai.ts     # ダミー 3AI 本文
+    research-mock-ai.ts     # 検証案テンプレート
     research-markdown.ts    # Markdown 出力
     research-storage.ts     # localStorage
   types/
@@ -126,7 +127,7 @@ src/
 
 ### 3AIレポートモーダル
 
-- タブ: ChatGPT / Gemini / Codex / Compare
+- タブ: ChatGPT / Gemini / Claude / Compare
 - **`[共通点をAI共通まとめへ反映]`** + `[閉じる]`
 
 ---
@@ -206,13 +207,23 @@ src/
   - ログアウト操作をヘッダーへ追加
   - Next.jsを脆弱性修正版 `15.5.19` へ更新
   - 既存Surge版はモックとして凍結
+- [x] **第2段階: OpenAI → Claude → Gemini接続**
+  - OpenAI Responses API + Web Search
+  - Claude Messages API + Web Search Tool
+  - Gemini API + Google Search grounding
+  - `/api/research` を認証必須Route Handlerとして追加
+  - 3社を並列実行し、部分失敗時も成功レポートを保持
+  - モックへの自動フォールバックを廃止
+  - APIキー・モデル名をサーバー環境変数化
 
 ### 未着手 / 要確認
 
 - [ ] Google Cloud ConsoleでOAuth Client ID / Secretを発行
 - [ ] `.env.local` とVercelへGoogle OAuth環境変数を設定
 - [ ] 実Googleアカウントでログイン・許可メール制限を確認
-- [ ] **第2段階: OpenAI → Claude → Gemini接続**
+- [ ] OpenAI / Anthropic / Gemini APIキーを`.env.local`とVercelへ設定
+- [ ] 3社の実API通信・課金・利用上限を確認
+- [ ] **第3段階: 3AI比較・出典統合**
 - [ ] **STEP3 `[最終本文を作成]` → Google Drive 保存の実装**
   - 形式: `.docx`（Word）
   - 手段: GAS（Google Apps Script）で直接書き込み
@@ -222,7 +233,7 @@ src/
   - 手段: GitHub REST API + PAT（ユーザーが localStorage に設定）
   - 保存先: `hiroshiandailab/3ai-research-and-report`
   - 目的: 変更履歴の追跡・バージョン管理
-- [ ] 本番 API（OpenAI / Gemini / Codex）接続
+- [x] 本番 API（OpenAI / Gemini / Claude）接続コード
 - [ ] `research-workbench` との同期方針（凍結 vs マージ）
 - [ ] GitHub Pages / Vercel 等の検討（現状 Surge 前提）
 

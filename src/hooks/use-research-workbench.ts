@@ -2,18 +2,23 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  buildVerificationPlanFromHypothesis,
-  runMockResearch,
-} from "@/lib/research-mock-ai";
+  ART_MAIN_QUESTION_PLACEHOLDER,
+  DEFAULT_MAIN_QUESTION_PLACEHOLDER,
+} from "@/lib/research-brief";
+import { buildVerificationPlanFromHypothesis } from "@/lib/research-mock-ai";
 import { loadWorkspace, saveWorkspace } from "@/lib/research-storage";
 import {
+  AI_TOOLS,
   DEFAULT_WORKSPACE,
+  SOURCE_TOOL_LABELS,
+  type AiToolId,
   type CardLayer,
   type CardStatus,
   type ResearchCard,
   type SourceTool,
   type WorkspaceState,
 } from "@/types/research";
+import type { ResearchResponse } from "@/types/research-api";
 
 export function useResearchWorkbench() {
   const [state, setState] = useState<WorkspaceState>(DEFAULT_WORKSPACE);
@@ -257,21 +262,81 @@ export function useResearchWorkbench() {
 
   const runResearch = useCallback(() => {
     researchCancelRef.current?.();
-    setState((s) => {
-      researchCancelRef.current = runMockResearch(
-        s,
-        (partial) => setState((cur) => ({ ...cur, ...partial })),
-        (final) => {
-          setState((cur) => ({ ...cur, ...final }));
+    const controller = new AbortController();
+    const cancelResearch = () => controller.abort();
+    researchCancelRef.current = cancelResearch;
+
+    const effectiveBrief =
+      state.brief.trim() ||
+      (state.mode === "ART"
+        ? ART_MAIN_QUESTION_PLACEHOLDER
+        : DEFAULT_MAIN_QUESTION_PLACEHOLDER);
+    const request = {
+      brief: effectiveBrief,
+      mode: state.mode,
+    };
+
+    setState((s) => ({
+      ...s,
+      brief: effectiveBrief,
+      aiStatus: { chatgpt: "running", gemini: "running", claude: "running" },
+    }));
+
+    void fetch("/api/research", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(request),
+      signal: controller.signal,
+    })
+      .then(async (response) => {
+        const body = (await response.json()) as ResearchResponse | { error?: string };
+        if (!response.ok || !("results" in body)) {
+          throw new Error(
+            "error" in body && body.error
+              ? body.error
+              : "3AIリサーチを実行できませんでした",
+          );
+        }
+        return body;
+      })
+      .then((body) => {
+        const aiReports = {} as Record<AiToolId, string>;
+        const aiStatus = {} as WorkspaceState["aiStatus"];
+
+        for (const provider of AI_TOOLS) {
+          aiReports[provider] = body.results[provider].report;
+          aiStatus[provider] = body.results[provider].status;
+        }
+
+        setState((s) => ({
+          ...s,
+          aiReports,
+          aiStatus,
+          aiComparison: body.comparison,
+        }));
+      })
+      .catch((error: unknown) => {
+        if (controller.signal.aborted) return;
+        const message =
+          error instanceof Error ? error.message : "3AIリサーチでエラーが発生しました";
+        setState((s) => ({
+          ...s,
+          aiStatus: { chatgpt: "error", gemini: "error", claude: "error" },
+          aiReports: Object.fromEntries(
+            AI_TOOLS.map((provider) => [
+              provider,
+              `# ${SOURCE_TOOL_LABELS[provider]} Report\n\n## 実行エラー\n\n${message}`,
+            ]),
+          ) as Record<AiToolId, string>,
+          aiComparison: `# 3AI実行エラー\n\n${message}`,
+        }));
+      })
+      .finally(() => {
+        if (researchCancelRef.current === cancelResearch) {
           researchCancelRef.current = null;
-        },
-      );
-      return {
-        ...s,
-        aiStatus: { chatgpt: "running", gemini: "running", claude: "running" },
-      };
-    });
-  }, []);
+        }
+      });
+  }, [state.brief, state.mode]);
 
   const runVerification = useCallback(() => {
     verificationCancelRef.current?.();

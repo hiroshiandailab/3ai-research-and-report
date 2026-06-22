@@ -18,6 +18,22 @@ AUTH_SECRET=
 AUTH_GOOGLE_ID=
 AUTH_GOOGLE_SECRET=
 AUTH_ALLOWED_EMAILS=allowed@example.com
+
+OPENAI_API_KEY=
+ANTHROPIC_API_KEY=
+GEMINI_API_KEY=
+
+OPENAI_MODEL=gpt-5.5
+ANTHROPIC_MODEL=claude-sonnet-4-6
+GEMINI_MODEL=gemini-3.5-flash
+
+OPENAI_API_KEY=
+ANTHROPIC_API_KEY=
+GEMINI_API_KEY=
+
+OPENAI_MODEL=gpt-5.5
+ANTHROPIC_MODEL=claude-sonnet-4-6
+GEMINI_MODEL=gemini-3.5-flash
 ```
 
 Google OAuthの承認済みリダイレクトURI:
@@ -54,5 +70,29 @@ npm run start
 - APIキーやOAuth Secretはサーバー環境変数のみ
 - トップページはサーバー側でセッションを検証
 - 今後追加する各API Routeでも `auth()` による認証確認を行う
+
+## 3AIリサーチ
+
+`Research`を実行すると、認証済みのサーバーAPIから3社を並列実行します。
+
+- OpenAI Responses API + Web Search
+- Claude Messages API + Web Search Tool
+- Gemini API + Google Search grounding
+- 1社が失敗しても、成功したAIのレポートは保持
+- APIキーはサーバー環境変数だけで管理
+
+3AIの共通点・相違点と出典統合は第3段階で実装します。
+
+## 3AIリサーチ
+
+`Research`を実行すると、認証済みのサーバーAPIから3社を並列実行します。
+
+- OpenAI Responses API + Web Search
+- Claude Messages API + Web Search Tool
+- Gemini API + Google Search grounding
+- 1社が失敗しても、成功したAIのレポートは保持
+- APIキーはサーバー環境変数だけで管理
+
+3AIの共通点・相違点と出典統合は第3段階で実装します。
 
 詳細な作業状況は [AGENTS.md](./AGENTS.md) と [HANDOFF.md](./HANDOFF.md) を参照してください。

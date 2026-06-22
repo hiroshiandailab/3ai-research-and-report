@@ -51,7 +51,7 @@ function sanitizeMode(raw: unknown): ResearchMode {
 }
 
 function sanitizeRunState(raw: unknown): RunState {
-  if (raw === "running" || raw === "done") return raw;
+  if (raw === "running" || raw === "done" || raw === "error") return raw;
   return "idle";
 }
 

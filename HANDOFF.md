@@ -29,7 +29,8 @@
 - **Tailwind CSS** + **shadcn/ui**
 - **認証**: Auth.js + Google OAuth + `AUTH_ALLOWED_EMAILS`
 - **本番方針**: Vercel（Surge版はモックとして凍結）
-- **状態**: ブラウザのみ（localStorage）、**API 接続なし**（ダミー AI）
+- **状態**: UI状態はlocalStorage、3AI実行は認証済みサーバーAPI
+- **3AI**: OpenAI Responses + Web Search / Claude Messages + Web Search / Gemini + Google Search
 - **Node**: `npm install` → `npm run dev`（開発） / `npm run build`（サーバー版ビルド）
 
 ---
@@ -97,7 +98,7 @@ src/
     use-research-workbench.ts  # 状態・ダミー Research・採用・反映
   lib/
     research-brief.ts       # ART プレースホルダー
-    research-mock-ai.ts     # ダミー 3AI 本文
+    research-mock-ai.ts     # 検証案テンプレート
     research-markdown.ts    # Markdown 出力
     research-storage.ts     # localStorage
   types/
@@ -118,14 +119,16 @@ src/
 
 - [x] リサーチ対象選択（Art 初期）
 - [x] Main Question 入力
-- [x] Research → ダミー 3AI 生成
+- [x] Research → OpenAI / Claude / Geminiを並列実行
 - [x] 3AI モーダル・タブ切替
 - [x] Compare → AI共通まとめへ反映
 - [x] 共通まとめから文選択 → 採用
 - [x] 採用パネル手入力追加（Textarea）
 - [x] 最終本文を作成 → finalReport 反映
 - [x] 手動編集 + Markdown 生成・コピー
-- [ ] **本番 API 連携**（未着手・モックのみ）
+- [x] **本番3AI API接続コード**
+- [ ] 3社APIキー設定・ライブ通信確認
+- [ ] 3AI比較・出典統合（第3段階）
 
 ---
 
@@ -191,7 +194,9 @@ git push origin main
 
 - [x] Surgeモック版へのデプロイ確認
 - [ ] Vercel本番プロジェクトの作成・公開（第7段階）
-- [ ] 本番 API（OpenAI / Gemini / Claude）接続
+- [x] 本番 API（OpenAI / Gemini / Claude）接続コード
+- [ ] APIキー設定・ライブ通信確認
+- [ ] 3AI比較・出典統合
 - [ ] `research-workbench` 側を 3ai と同期するか、レガシーとして凍結するか方針決定
 - [ ] Vercel本番プロジェクトの作成・環境変数設定（第7段階）
 

@@ -1,6 +1,6 @@
 # 3AI Research & Report
 
-3AI（ChatGPT / Gemini / Claude）の回答を比較し、ユーザーが採用した重要文から最終レポートを組み立てる **ブラウザ完結型 AI リサーチ作業台** のモック MVP。
+3AI（ChatGPT / Claude / Gemini）の回答を比較し、ユーザーが採用した重要文から最終レポートを組み立てる AI リサーチ作業台。
 
 - **GitHub:** https://github.com/hiroshiandailab/3ai-research-and-report
 - **Surge（モック版）:** https://hiroshi-tsutsumi-202506-3ai-research-and-report.surge.sh/
@@ -39,7 +39,7 @@ npm run dev
 - **既存 Surge URL へデプロイしない:** https://hiroshi-tsutsumi-202605-workspace.surge.sh/（`research-workbench` 用）
 - Surge版はモックとして凍結し、**今後は再デプロイしない**
 - 本番公開先は第7段階で作成するVercelプロジェクト
-- **AI API 未接続** — AI 応答は `src/lib/research-mock-ai.ts` のダミー。本番 AI API 連携は第2段階
+- **3AI接続コード実装済み** — APIキー設定とライブ通信確認は要対応
 - 変更は **最小スコープ** — 依頼外のリファクタ・UI 全面変更・依存追加はしない
 - PowerShell では `&&` 不可 → `;` を使う
 
@@ -87,7 +87,7 @@ src/
     use-research-workbench.ts  # 状態・ダミー Research・採用・反映
   lib/
     research-brief.ts       # Art プレースホルダー等
-    research-mock-ai.ts     # ダミー 3AI 本文
+    research-mock-ai.ts     # 検証案テンプレート
     research-markdown.ts    # Markdown 出力
     research-storage.ts     # localStorage
   types/
@@ -200,6 +200,9 @@ src/
 - [x] STEP 2 と STEP 3 の重なりを解消し、縦スクロール表示へ修正
 - [x] 第1段階: Next.jsサーバー化・Auth.js Google認証・許可メール制限
 - [x] Next.jsを脆弱性修正版 `15.5.19` へ更新
+- [x] 第2段階: OpenAI / Claude / Gemini本番APIアダプターと認証済み`/api/research`
+- [ ] 3社のAPIキー設定とライブ通信確認
+- [ ] 第3段階: 3AI比較・出典統合
 - [ ] **STEP3 `[最終本文を作成]` → Google Drive 保存の実装**
   - 形式: `.docx`（Word）
   - 手段: GAS（Google Apps Script）で直接書き込み

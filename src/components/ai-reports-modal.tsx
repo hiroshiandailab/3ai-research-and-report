@@ -11,12 +11,10 @@ import {
 } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { generateMockAiReport } from "@/lib/research-mock-ai";
 import {
   AI_TOOLS,
   SOURCE_TOOL_LABELS,
   type AiToolId,
-  type ResearchMode,
   type RunState,
   type WorkspaceState,
 } from "@/types/research";
@@ -43,6 +41,12 @@ function runStateBadge(state: RunState) {
           完了
         </Badge>
       );
+    case "error":
+      return (
+        <Badge className="bg-red-600 text-[10px] font-normal text-white hover:bg-red-600">
+          エラー
+        </Badge>
+      );
   }
 }
 
@@ -58,7 +62,6 @@ type AiReportsModalProps = {
 function reportForTab(
   tab: AiReportTab,
   state: WorkspaceState,
-  mode: ResearchMode,
 ): string {
   if (tab === "compare") {
     return (
@@ -68,7 +71,7 @@ function reportForTab(
   }
   return (
     state.aiReports[tab].trim() ||
-    generateMockAiReport(tab, state.brief.trim(), mode)
+    `${SOURCE_TOOL_LABELS[tab]}のレポートはまだありません。Researchを実行してください。`
   );
 }
 
@@ -128,7 +131,7 @@ export function AiReportsModal({
             >
               <ScrollArea className="h-[min(420px,52vh)]">
                 <pre className="whitespace-pre-wrap px-6 py-4 font-sans text-sm leading-relaxed text-foreground/90">
-                  {reportForTab(tab, state, state.mode)}
+                  {reportForTab(tab, state)}
                 </pre>
               </ScrollArea>
             </TabsContent>
@@ -140,6 +143,7 @@ export function AiReportsModal({
             type="button"
             variant="secondary"
             className="w-full sm:w-auto"
+            disabled={!state.aiComparison.includes("## 共通点")}
             onClick={() => {
               onReflectCommonToA();
             }}
