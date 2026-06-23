@@ -7,6 +7,7 @@ import type { ProviderResearchResult } from "@/types/research-api";
 import type { ResearchMode } from "@/types/research";
 
 const DEFAULT_MODEL = "claude-sonnet-4-6";
+const REQUEST_TIMEOUT_MS = 90_000;
 
 export async function researchWithClaude(
   brief: string,
@@ -15,24 +16,31 @@ export async function researchWithClaude(
   const apiKey = requireSecret("ANTHROPIC_API_KEY");
   const model = process.env.ANTHROPIC_MODEL || DEFAULT_MODEL;
 
-  const client = new Anthropic({ apiKey, timeout: 120_000 });
-  const response = await client.messages.create({
-    model,
-    max_tokens: 5000,
-    messages: [
-      {
-        role: "user",
-        content: buildResearchPrompt(brief, mode, "Claude"),
-      },
-    ],
-    tools: [
-      {
-        type: "web_search_20250305",
-        name: "web_search",
-        max_uses: 5,
-      },
-    ],
+  const client = new Anthropic({
+    apiKey,
+    maxRetries: 0,
+    timeout: REQUEST_TIMEOUT_MS,
   });
+  const response = await client.messages.create(
+    {
+      model,
+      max_tokens: 5000,
+      messages: [
+        {
+          role: "user",
+          content: buildResearchPrompt(brief, mode, "Claude"),
+        },
+      ],
+      tools: [
+        {
+          type: "web_search_20250305",
+          name: "web_search",
+          max_uses: 5,
+        },
+      ],
+    },
+    { signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) },
+  );
 
   const report = response.content
     .filter((block) => block.type === "text")

@@ -1,6 +1,6 @@
 # Research Workbench / 3AI Research & Report — 引き継ぎメモ
 
-最終更新: 2026-05-24  
+最終更新: 2026-06-23
 対象読者: 別チャット・別担当者への引き継ぎ用
 
 ---
@@ -70,7 +70,8 @@
 - タイトル: `3AIレポート`
 - タブ: ChatGPT / Gemini / Claude / Compare
 - **`[共通点をAI共通まとめへ反映]`** + `[閉じる]`
-- ダミーレポート（`src/lib/research-mock-ai.ts`）
+- 本番レポートは認証済み `/api/research` から取得
+- `src/lib/research-mock-ai.ts` は検証案テンプレート用途のみ
 
 ---
 
@@ -128,7 +129,9 @@ src/
 - [x] 最終本文を作成 → finalReport 反映
 - [x] 手動編集 + Markdown 生成・コピー
 - [x] **本番3AI API接続コード**
-- [ ] 3社APIキー設定・ライブ通信確認
+- [x] Google OAuth設定・許可アカウントでのログイン確認
+- [x] OpenAI / Claudeのライブ通信確認
+- [ ] Gemini生成確認（APIキーは有効、利用枠超過429）
 - [ ] 3AI比較・出典統合（第3段階）
 
 ---
@@ -144,6 +147,12 @@ npm run dev
 
 # ビルド（サーバー版）
 npm run build
+
+# 秘密情報・lint・本番ビルド
+npm run verify
+
+# 3社APIの最小ライブ通信
+npm run test:ai
 ```
 
 Google OAuth callback:
@@ -196,7 +205,8 @@ git push origin main
 - [x] Surgeモック版へのデプロイ確認
 - [ ] Vercel本番プロジェクトの作成・公開（第7段階）
 - [x] 本番 API（OpenAI / Gemini / Claude）接続コード
-- [ ] APIキー設定・ライブ通信確認
+- [x] Google OAuth・OpenAI・Claudeのローカル実通信確認
+- [ ] Geminiの利用枠有効化・生成再確認
 - [ ] 3AI比較・出典統合
 - [ ] `research-workbench` 側を 3ai と同期するか、レガシーとして凍結するか方針決定
 - [ ] Vercel本番プロジェクトの作成・環境変数設定（第7段階）

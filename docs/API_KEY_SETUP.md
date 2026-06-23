@@ -51,10 +51,12 @@ GEMINI_API_KEY=ここへGeminiキー
 
 ```powershell
 npm run check:secrets
+npm run test:ai
 npm run dev
 ```
 
 `check:secrets`はGit管理対象だけを検査するため、`.env.local`内のキーを読み上げたり表示したりしません。
+`test:ai`は3社へ最小のWeb検索リクエストを送り、回答本文やAPIキーを表示せず接続結果だけを表示します。
 
 ## 5. Vercel設定
 

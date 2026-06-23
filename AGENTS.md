@@ -175,7 +175,7 @@ src/
 
 ## 作業状況
 
-**最終更新:** 2026-06-22
+**最終更新:** 2026-06-23
 **担当:** Codex
 
 ### 完了済み
@@ -223,14 +223,18 @@ src/
   - 外部向けエラーからSDK詳細を除去
   - `npm run check:secrets`を追加
   - 設定手順: `docs/API_KEY_SETUP.md`
+- [x] **ローカル認証・実API通信確認**
+  - Google OAuth Webクライアントを設定し、許可アカウントでログイン成功
+  - `.env.local` の認証情報・3社APIキーを秘密情報検査済み
+  - OpenAI / Claudeは実通信とWeb検索を確認
+  - Gemini APIキーは有効。生成は利用枠超過（429）のため保留
+  - 3社をアプリ経由で実行し、成功・失敗の個別表示を確認
+  - 各AI通信を90秒で打ち切り、SDKの自動再試行を抑制
 
 ### 未着手 / 要確認
 
-- [ ] Google Cloud ConsoleでOAuth Client ID / Secretを発行
-- [ ] `.env.local` とVercelへGoogle OAuth環境変数を設定
-- [ ] 実Googleアカウントでログイン・許可メール制限を確認
-- [ ] OpenAI / Anthropic / Gemini APIキーを`.env.local`とVercelへ設定
-- [ ] 3社の実API通信・課金・利用上限を確認
+- [ ] VercelへGoogle OAuth・3社APIの環境変数を設定
+- [ ] Geminiの課金・利用枠を有効化し、生成成功を再確認
 - [ ] **第3段階: 3AI比較・出典統合**
 - [ ] **STEP3 `[最終本文を作成]` → Google Drive 保存の実装**
   - 形式: `.docx`（Word）

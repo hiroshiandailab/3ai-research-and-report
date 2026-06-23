@@ -7,6 +7,7 @@ import type { ProviderResearchResult } from "@/types/research-api";
 import type { ResearchMode } from "@/types/research";
 
 const DEFAULT_MODEL = "gpt-5.5";
+const REQUEST_TIMEOUT_MS = 90_000;
 
 export async function researchWithOpenAI(
   brief: string,
@@ -15,12 +16,19 @@ export async function researchWithOpenAI(
   const apiKey = requireSecret("OPENAI_API_KEY");
   const model = process.env.OPENAI_MODEL || DEFAULT_MODEL;
 
-  const client = new OpenAI({ apiKey, timeout: 120_000 });
-  const response = await client.responses.create({
-    model,
-    tools: [{ type: "web_search", search_context_size: "medium" }],
-    input: buildResearchPrompt(brief, mode, "ChatGPT"),
+  const client = new OpenAI({
+    apiKey,
+    maxRetries: 0,
+    timeout: REQUEST_TIMEOUT_MS,
   });
+  const response = await client.responses.create(
+    {
+      model,
+      tools: [{ type: "web_search", search_context_size: "medium" }],
+      input: buildResearchPrompt(brief, mode, "ChatGPT"),
+    },
+    { signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) },
+  );
 
   const report = response.output_text.trim();
   if (!report) throw new Error("OpenAI APIから本文が返されませんでした");

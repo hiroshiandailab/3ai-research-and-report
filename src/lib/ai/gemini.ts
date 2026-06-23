@@ -7,6 +7,7 @@ import type { ProviderResearchResult } from "@/types/research-api";
 import type { ResearchMode } from "@/types/research";
 
 const DEFAULT_MODEL = "gemini-3.5-flash";
+const REQUEST_TIMEOUT_MS = 90_000;
 
 export async function researchWithGemini(
   brief: string,
@@ -21,6 +22,7 @@ export async function researchWithGemini(
     contents: buildResearchPrompt(brief, mode, "Gemini"),
     config: {
       tools: [{ googleSearch: {} }],
+      abortSignal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
     },
   });
 
