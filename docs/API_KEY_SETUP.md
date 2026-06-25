@@ -86,6 +86,12 @@ AUTH_ALLOWED_EMAILS
 
 環境変数を変更した後は再デプロイします。
 
+## 6. Google Drive保存用GAS
+
+`[最終本文を作成]` からGoogle Driveへ `.docx` 保存する設定は、次の手順書を参照してください。
+
+- `docs/GOOGLE_DRIVE_GAS_SETUP.md`
+
 ## 漏えいが疑われる場合
 
 1. 該当キーを各社コンソールですぐ失効する

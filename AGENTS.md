@@ -175,7 +175,7 @@ src/
 
 ## 作業状況
 
-**最終更新:** 2026-06-23
+**最終更新:** 2026-06-25
 **担当:** Codex
 
 ### 完了済み
@@ -230,16 +230,26 @@ src/
   - Gemini APIキーは有効。生成は利用枠超過（429）のため保留
   - 3社をアプリ経由で実行し、成功・失敗の個別表示を確認
   - 各AI通信を90秒で打ち切り、SDKの自動再試行を抑制
+- [x] **Gemini利用枠再確認（2026-06-25）**
+  - `npm run test:ai` でOpenAI / Claudeは成功
+  - GeminiはAPIキー有効、生成は引き続き利用枠超過（`KEY_OK_QUOTA_BLOCKED`）
+- [x] **Google Drive保存（GAS連携）実装**
+  - `/api/save/google-drive` を認証必須Route Handlerとして追加
+  - `[最終本文を作成]` 後にGoogle Drive保存を実行
+  - GASコード: `gas/google-drive-save/Code.gs`
+  - 手順書: `docs/GOOGLE_DRIVE_GAS_SETUP.md`
+  - 保存テストコマンド: `npm run test:drive`
+  - `GOOGLE_DRIVE_GAS_WEB_APP_URL` / `GOOGLE_DRIVE_GAS_SHARED_SECRET` はサーバー環境変数のみ
 
 ### 未着手 / 要確認
 
 - [ ] VercelへGoogle OAuth・3社APIの環境変数を設定
 - [ ] Geminiの課金・利用枠を有効化し、生成成功を再確認
 - [ ] **第3段階: 3AI比較・出典統合**
-- [ ] **STEP3 `[最終本文を作成]` → Google Drive 保存の実装**
-  - 形式: `.docx`（Word）
-  - 手段: GAS（Google Apps Script）で直接書き込み
-  - 目的: NotebookLM 連携
+- [ ] **Google Drive保存の実Driveテスト**
+  - `hiroshiandailab@gmail.com` 側でGAS Webアプリを作成・デプロイ
+  - `.env.local` に `GOOGLE_DRIVE_GAS_WEB_APP_URL` / `GOOGLE_DRIVE_GAS_SHARED_SECRET` を設定
+  - `npm run test:drive` で `.docx` 作成を確認
 - [ ] **STEP3 `[Markdown生成]` → GitHub 保存の実装**
   - 形式: `.md`
   - 手段: GitHub REST API + PAT（ユーザーが localStorage に設定）
@@ -254,6 +264,7 @@ src/
 - 月次課題レポート（`personal-workspace-report`）は別 Surge URL。アプリ本体とは独立
 - レポート用キャプチャは `C:\Users\h\Desktop\My-First-Project\images\Research Workbench.png`
 - `gh` CLI の winget インストールは失敗履歴あり。repo 作成は git credential + API で実施済み
+- Googleアカウントは `hiroshiandailab@gmail.com` を追加済み。メイン `h@hiroshitt.com` は、サブGmail側でGoogle Drive保存用GASを作成し動作確認後に外す方針
 
 ### 第4回グループセッション 設計決定事項（2026-06-09）
 

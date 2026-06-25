@@ -1,6 +1,6 @@
 # Research Workbench / 3AI Research & Report — 引き継ぎメモ
 
-最終更新: 2026-06-23
+最終更新: 2026-06-25
 対象読者: 別チャット・別担当者への引き継ぎ用
 
 ---
@@ -32,6 +32,7 @@
 - **状態**: UI状態はlocalStorage、3AI実行は認証済みサーバーAPI
 - **3AI**: OpenAI Responses + Web Search / Claude Messages + Web Search / Gemini + Google Search
 - **秘密情報**: `.env.local` / Vercel Sensitive変数のみ。`NEXT_PUBLIC_*_API_KEY`は禁止
+- **Google Drive保存**: Next.js Route Handler → GAS Webアプリ → Google Drive `.docx`
 - **Node**: `npm install` → `npm run dev`（開発） / `npm run build`（サーバー版ビルド）
 
 ---
@@ -131,8 +132,10 @@ src/
 - [x] **本番3AI API接続コード**
 - [x] Google OAuth設定・許可アカウントでのログイン確認
 - [x] OpenAI / Claudeのライブ通信確認
-- [ ] Gemini生成確認（APIキーは有効、利用枠超過429）
+- [ ] Gemini生成確認（APIキーは有効、2026-06-25時点も利用枠超過）
 - [ ] 3AI比較・出典統合（第3段階）
+- [x] Google Drive保存用GAS連携コード
+- [ ] Google Drive保存の実Driveテスト（GAS WebアプリURL・共有シークレット設定後）
 
 ---
 
@@ -153,6 +156,9 @@ npm run verify
 
 # 3社APIの最小ライブ通信
 npm run test:ai
+
+# Google Drive .docx保存テスト
+npm run test:drive
 ```
 
 Google OAuth callback:
@@ -207,9 +213,15 @@ git push origin main
 - [x] 本番 API（OpenAI / Gemini / Claude）接続コード
 - [x] Google OAuth・OpenAI・Claudeのローカル実通信確認
 - [ ] Geminiの利用枠有効化・生成再確認
+- [ ] `hiroshiandailab@gmail.com` 側でGASを作成し、`.docx` Drive保存を実テスト
 - [ ] 3AI比較・出典統合
 - [ ] `research-workbench` 側を 3ai と同期するか、レガシーとして凍結するか方針決定
 - [ ] Vercel本番プロジェクトの作成・環境変数設定（第7段階）
+
+### Googleアカウント移行メモ（2026-06-25）
+
+- `hiroshiandailab@gmail.com` を追加済み
+- メイン `h@hiroshitt.com` は、サブGmail側でGoogle Drive保存用GASを作成し動作確認後に外す方針
 
 ---
 

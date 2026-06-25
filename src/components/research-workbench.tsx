@@ -39,6 +39,12 @@ const MODES: { id: ResearchMode; label: string }[] = [
 
 type AiReportTab = AiToolId | "compare";
 
+interface GoogleDriveSaveResponse {
+  fileName?: string;
+  url?: string;
+  error?: string;
+}
+
 function StepHeader({
   step,
   label,
@@ -183,7 +189,6 @@ export function ResearchWorkbench({ userEmail }: { userEmail: string }) {
     deleteCard,
     addCard,
     adoptCardsToB,
-    reflectAllBToFinalReport,
     organizeCommonToA,
     createVerificationPlansFromB,
     runResearch,
@@ -197,6 +202,7 @@ export function ResearchWorkbench({ userEmail }: { userEmail: string }) {
   const [reportTab, setReportTab] = useState<AiReportTab>("chatgpt");
   const [selectedSummaryIds, setSelectedSummaryIds] = useState<Set<string>>(new Set());
   const [adoptDraft, setAdoptDraft] = useState("");
+  const [isSavingDrive, setIsSavingDrive] = useState(false);
   const finalReportRef = useRef<HTMLTextAreaElement>(null);
 
   const cardsA = cardsByLayer("A");
@@ -256,14 +262,63 @@ export function ResearchWorkbench({ userEmail }: { userEmail: string }) {
     );
   }
 
-  function handleFinalReport() {
-    const n = reflectAllBToFinalReport();
-    flash(
-      n > 0
-        ? `採用した ${n} 件を最終レポートへ反映しました`
-        : "採用する重要文がありません",
-    );
+  function buildNextFinalReport() {
+    const texts = cardsB
+      .map((card) => card.content.trim())
+      .filter((content) => content.length > 0);
+    const merged = texts.map((text, index) => `${index + 1}. ${text}`).join("\n");
+    const current = state.finalReport.trim();
+    return {
+      count: texts.length,
+      content: current ? `${current}\n\n---\n\n${merged}` : merged,
+    };
+  }
+
+  async function saveFinalReportToDrive(content: string) {
+    const response = await fetch("/api/save/google-drive", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: "3AI Research Report",
+        brief: state.brief,
+        content,
+      }),
+      cache: "no-store",
+    });
+
+    const result = (await response.json()) as GoogleDriveSaveResponse;
+    if (!response.ok) {
+      throw new Error(result.error || "Google Drive保存に失敗しました");
+    }
+    return result;
+  }
+
+  async function handleFinalReport() {
+    const nextReport = buildNextFinalReport();
+    if (nextReport.count === 0) {
+      flash("採用する重要文がありません");
+      finalReportRef.current?.focus();
+      return;
+    }
+
+    setFinalReport(nextReport.content);
     finalReportRef.current?.focus();
+
+    setIsSavingDrive(true);
+    try {
+      const saved = await saveFinalReportToDrive(nextReport.content);
+      flash(
+        saved.fileName
+          ? `最終本文を作成し、Google Driveへ保存しました: ${saved.fileName}`
+          : "最終本文を作成し、Google Driveへ保存しました",
+      );
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Google Drive保存に失敗しました";
+      flash(`最終本文は作成しました。${message}`);
+    } finally {
+      setIsSavingDrive(false);
+    }
   }
 
   async function handleMarkdownGenerate() {
@@ -560,9 +615,10 @@ export function ResearchWorkbench({ userEmail }: { userEmail: string }) {
                   type="button"
                   size="lg"
                   className="bg-[#2563EB] px-6 hover:bg-[#1D4ED8]"
+                  disabled={isSavingDrive}
                   onClick={handleFinalReport}
                 >
-                  最終本文を作成
+                  {isSavingDrive ? "Drive保存中…" : "最終本文を作成"}
                 </Button>
                 <Button
                   type="button"

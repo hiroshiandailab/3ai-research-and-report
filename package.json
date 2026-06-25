@@ -9,6 +9,7 @@
     "lint": "eslint src --ext .ts,.tsx",
     "check:secrets": "node scripts/check-secrets.mjs",
     "test:ai": "node scripts/test-ai-connectivity.mjs",
+    "test:drive": "node scripts/test-google-drive-save.mjs",
     "verify": "npm run check:secrets && npm run lint && npm run build"
   },
   "dependencies": {
