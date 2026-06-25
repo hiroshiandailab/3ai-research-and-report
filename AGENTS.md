@@ -240,12 +240,17 @@ src/
   - 手順書: `docs/GOOGLE_DRIVE_GAS_SETUP.md`
   - 保存テストコマンド: `npm run test:drive`
   - `GOOGLE_DRIVE_GAS_WEB_APP_URL` / `GOOGLE_DRIVE_GAS_SHARED_SECRET` はサーバー環境変数のみ
+- [x] **第3段階: 3AI比較・出典統合**
+  - `src/lib/ai/comparison.ts` を追加
+  - 3AI回答からMarkdownリンク形式の出典URLを抽出・統合
+  - 成功したAI回答から「共通点」「相違点」「採用候補」「統合出典」「注意点」をCompareへ生成
+  - Gemini失敗時もOpenAI / Claudeなど成功分で比較を作成
+  - 「共通点をAI共通まとめへ反映」はCompareの採用候補・共通点をカード化し、出典URLも保持
 
 ### 未着手 / 要確認
 
 - [ ] VercelへGoogle OAuth・3社APIの環境変数を設定
 - [ ] Geminiの課金・利用枠を有効化し、生成成功を再確認
-- [ ] **第3段階: 3AI比較・出典統合**
 - [ ] **Google Drive保存の実Driveテスト**
   - `hiroshiandailab@gmail.com` 側でGAS Webアプリを作成・デプロイ
   - `.env.local` に `GOOGLE_DRIVE_GAS_WEB_APP_URL` / `GOOGLE_DRIVE_GAS_SHARED_SECRET` を設定

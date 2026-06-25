@@ -133,7 +133,10 @@ src/
 - [x] Google OAuth設定・許可アカウントでのログイン確認
 - [x] OpenAI / Claudeのライブ通信確認
 - [ ] Gemini生成確認（APIキーは有効、2026-06-25時点も利用枠超過）
-- [ ] 3AI比較・出典統合（第3段階）
+- [x] 3AI比較・出典統合（第3段階）
+  - Compareに「共通点」「相違点」「採用候補」「統合出典」「注意点」を生成
+  - Markdownリンク形式の出典URLを抽出・重複統合
+  - Gemini失敗時も成功したAI回答だけで比較可能
 - [x] Google Drive保存用GAS連携コード
 - [ ] Google Drive保存の実Driveテスト（GAS WebアプリURL・共有シークレット設定後）
 
@@ -214,7 +217,7 @@ git push origin main
 - [x] Google OAuth・OpenAI・Claudeのローカル実通信確認
 - [ ] Geminiの利用枠有効化・生成再確認
 - [ ] `hiroshiandailab@gmail.com` 側でGASを作成し、`.docx` Drive保存を実テスト
-- [ ] 3AI比較・出典統合
+- [x] 3AI比較・出典統合
 - [ ] `research-workbench` 側を 3ai と同期するか、レガシーとして凍結するか方針決定
 - [ ] Vercel本番プロジェクトの作成・環境変数設定（第7段階）
 

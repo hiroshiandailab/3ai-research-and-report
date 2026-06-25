@@ -20,6 +20,45 @@ import {
 } from "@/types/research";
 import type { ResearchResponse } from "@/types/research-api";
 
+function extractComparisonBullets(markdown: string): string[] {
+  const lines = markdown.split("\n");
+  const bullets: string[] = [];
+  let section = "";
+
+  for (const line of lines) {
+    const heading = line.match(/^##\s+(.+)$/);
+    if (heading) {
+      section = heading[1].trim();
+      continue;
+    }
+    if (section !== "採用候補" && section !== "共通点") continue;
+    if (!line.trim().startsWith("- ")) continue;
+
+    const content = line.replace(/^\s*-\s+/, "").trim();
+    if (
+      content.length > 12 &&
+      !content.includes("まだ抽出できません") &&
+      !content.includes("まだありません")
+    ) {
+      bullets.push(content);
+    }
+  }
+
+  return bullets.slice(0, 6);
+}
+
+function firstMarkdownUrl(markdown: string): string {
+  const match = markdown.match(/\[[^\]]+\]\((https?:\/\/[^\s)]+)\)/);
+  return match?.[1]?.replace(/[.,;:]+$/, "") ?? "";
+}
+
+function stripComparisonMeta(markdown: string): string {
+  return markdown
+    .replace(/\s*（一致: .*?）/g, "")
+    .replace(/\s*出典:\s*(?:\[[^\]]+\]\([^)]+\)(?:\s*\/\s*)?)+/g, "")
+    .trim();
+}
+
 export function useResearchWorkbench() {
   const [state, setState] = useState<WorkspaceState>(DEFAULT_WORKSPACE);
   const [hydrated, setHydrated] = useState(false);
@@ -120,11 +159,7 @@ export function useResearchWorkbench() {
     setState((s) => {
       const comparison = s.aiComparison.trim();
       const bullets = comparison
-        ? comparison
-            .split("\n")
-            .map((line) => line.replace(/^[-*#\d.]+\s*/, "").trim())
-            .filter((line) => line.length > 12 && !line.startsWith("#"))
-            .slice(0, 5)
+        ? extractComparisonBullets(comparison)
         : [
             "3モデルとも、ブリーフのスコープ整理が最初のステップとして有効",
             "根拠のない断定は避け、出典付きの事実へ分解する必要がある",
@@ -139,13 +174,17 @@ export function useResearchWorkbench() {
 
       const existing = new Set(s.cards.filter((c) => c.layer === "A").map((c) => c.content));
       const newCards = bullets
-        .filter((content) => !existing.has(content))
         .map((content) => ({
+          content: stripComparisonMeta(content),
+          sourceUrl: firstMarkdownUrl(content),
+        }))
+        .filter(({ content }) => content && !existing.has(content))
+        .map(({ content, sourceUrl }) => ({
           id: crypto.randomUUID(),
           content,
           layer: "A" as const,
-          sourceUrl: "",
-          memo: "AI共通まとめ（自動取り込み）",
+          sourceUrl,
+          memo: "3AI比較・出典統合から自動取り込み",
           status: "pending" as const,
           sourceTool: "manual" as const,
           createdAt: new Date().toISOString(),

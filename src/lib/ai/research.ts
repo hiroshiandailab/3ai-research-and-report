@@ -1,6 +1,7 @@
 import "server-only";
 
 import { researchWithClaude } from "@/lib/ai/claude";
+import { buildIntegratedComparison } from "@/lib/ai/comparison";
 import { researchWithGemini } from "@/lib/ai/gemini";
 import { researchWithOpenAI } from "@/lib/ai/openai";
 import {
@@ -76,25 +77,6 @@ function errorReport(provider: AiToolId, message: string): string {
   ].join("\n");
 }
 
-function buildExecutionSummary(
-  results: Record<AiToolId, ProviderResearchResult>,
-): string {
-  const lines = [
-    "# 3AI実行結果",
-    "",
-    ...AI_TOOLS.map((provider) => {
-      const result = results[provider];
-      return `- **${SOURCE_TOOL_LABELS[provider]}**: ${
-        result.status === "done" ? `完了（${result.model}）` : `失敗 — ${result.error}`
-      }`;
-    }),
-    "",
-    "3AIの共通点・相違点と出典統合は、第3段階で生成します。",
-  ];
-
-  return lines.join("\n");
-}
-
 export async function runProviderResearch(
   brief: string,
   mode: ResearchMode,
@@ -129,6 +111,6 @@ export async function runProviderResearch(
   return {
     generatedAt: new Date().toISOString(),
     results,
-    comparison: buildExecutionSummary(results),
+    comparison: buildIntegratedComparison(results),
   };
 }
