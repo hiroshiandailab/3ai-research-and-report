@@ -230,7 +230,7 @@ src/
   - Gemini APIキーは有効。生成は利用枠超過（429）のため保留
   - 3社をアプリ経由で実行し、成功・失敗の個別表示を確認
   - 各AI通信を90秒で打ち切り、SDKの自動再試行を抑制
-- [x] **Gemini利用枠再確認（2026-06-25）**
+- [x] **Gemini利用枠再確認（2026-06-27）**
   - `npm run test:ai` でOpenAI / Claudeは成功
   - GeminiはAPIキー有効、生成は引き続き利用枠超過（`KEY_OK_QUOTA_BLOCKED`）
 - [x] **Google Drive保存（GAS連携）実装**
