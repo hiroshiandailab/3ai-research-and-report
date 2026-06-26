@@ -139,7 +139,7 @@ src/
   - Markdownリンク形式の出典URLを抽出・重複統合
   - Gemini失敗時も成功したAI回答だけで比較可能
 - [x] Google Drive保存用GAS連携コード
-- [ ] Google Drive保存の実Driveテスト（GAS WebアプリURL・共有シークレット設定後）
+- [x] Google Drive保存の実Driveテスト（2026-06-27 `.docx` 作成確認済み）
 - [x] GitHub Markdown保存コード
 - [ ] GitHub Markdown保存の実GitHubテスト（`GITHUB_REPORT_TOKEN` 設定後）
 
@@ -222,7 +222,7 @@ git push origin main
 - [x] 本番 API（OpenAI / Gemini / Claude）接続コード
 - [x] Google OAuth・OpenAI・Claudeのローカル実通信確認
 - [ ] Geminiの利用枠有効化・生成再確認
-- [ ] `hiroshiandailab@gmail.com` 側でGASを作成し、`.docx` Drive保存を実テスト
+- [x] `hiroshiandailab@gmail.com` 側でGASを作成し、`.docx` Drive保存を実テスト
 - [x] 3AI比較・出典統合
 - [ ] `GITHUB_REPORT_TOKEN` を設定し、GitHub Markdown保存を実テスト
 - [ ] `research-workbench` 側を 3ai と同期するか、レガシーとして凍結するか方針決定

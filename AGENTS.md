@@ -240,6 +240,7 @@ src/
   - 手順書: `docs/GOOGLE_DRIVE_GAS_SETUP.md`
   - 保存テストコマンド: `npm run test:drive`
   - `GOOGLE_DRIVE_GAS_WEB_APP_URL` / `GOOGLE_DRIVE_GAS_SHARED_SECRET` はサーバー環境変数のみ
+  - 2026-06-27: `npm run test:drive` 成功。Google Driveへ `.docx` 作成確認済み
 - [x] **第3段階: 3AI比較・出典統合**
   - `src/lib/ai/comparison.ts` を追加
   - 3AI回答からMarkdownリンク形式の出典URLを抽出・統合
@@ -259,10 +260,10 @@ src/
 
 - [ ] VercelへGoogle OAuth・3社APIの環境変数を設定
 - [ ] Geminiの課金・利用枠を有効化し、生成成功を再確認
-- [ ] **Google Drive保存の実Driveテスト**
-  - `hiroshiandailab@gmail.com` 側でGAS Webアプリを作成・デプロイ
-  - `.env.local` に `GOOGLE_DRIVE_GAS_WEB_APP_URL` / `GOOGLE_DRIVE_GAS_SHARED_SECRET` を設定
-  - `npm run test:drive` で `.docx` 作成を確認
+- [x] **Google Drive保存の実Driveテスト**
+  - `hiroshiandailab@gmail.com` 側でGAS Webアプリを作成・デプロイ済み
+  - `.env.local` に `GOOGLE_DRIVE_GAS_WEB_APP_URL` / `GOOGLE_DRIVE_GAS_SHARED_SECRET` を設定済み
+  - `npm run test:drive` で `.docx` 作成を確認済み
 - [ ] **GitHub Markdown保存の実GitHubテスト**
   - `.env.local` に `GITHUB_REPORT_TOKEN` を設定
   - `npm run test:github` で `.md` 作成を確認
