@@ -27,13 +27,9 @@ OPENAI_MODEL=gpt-5.5
 ANTHROPIC_MODEL=claude-sonnet-4-6
 GEMINI_MODEL=gemini-3.5-flash
 
-OPENAI_API_KEY=
-ANTHROPIC_API_KEY=
-GEMINI_API_KEY=
-
-OPENAI_MODEL=gpt-5.5
-ANTHROPIC_MODEL=claude-sonnet-4-6
-GEMINI_MODEL=gemini-3.5-flash
+AI_MAX_OUTPUT_TOKENS=4000
+RESEARCH_MAX_RUNS_PER_HOUR=6
+RESEARCH_COOLDOWN_SECONDS=30
 ```
 
 Google OAuthの承認済みリダイレクトURI:
@@ -81,21 +77,19 @@ npm run start
 - 1社が失敗しても、成功したAIのレポートは保持
 - APIキーはサーバー環境変数だけで管理
 
-3AIの共通点・相違点と出典統合は第3段階で実装します。
+3AIの共通点・相違点・出典URLを統合し、成功したAIだけでも比較を生成します。
 
-## 3AIリサーチ
+## 検証
 
-`Research`を実行すると、認証済みのサーバーAPIから3社を並列実行します。
-
-- OpenAI Responses API + Web Search
-- Claude Messages API + Web Search Tool
-- Gemini API + Google Search grounding
-- 1社が失敗しても、成功したAIのレポートは保持
-- APIキーはサーバー環境変数だけで管理
-
-3AIの共通点・相違点と出典統合は第3段階で実装します。
+```powershell
+npm run test:unit
+npm run verify
+```
 
 詳細な作業状況は [AGENTS.md](./AGENTS.md) と [HANDOFF.md](./HANDOFF.md) を参照してください。
 
 APIキーの安全な取得・保存・Vercel設定は
 [docs/API_KEY_SETUP.md](./docs/API_KEY_SETUP.md)を参照してください。
+
+エラー処理・料金制御・テストは
+[docs/ERROR_COST_TESTING.md](./docs/ERROR_COST_TESTING.md)を参照してください。

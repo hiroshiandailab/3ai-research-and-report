@@ -2,6 +2,7 @@ import "server-only";
 
 import { NextResponse } from "next/server";
 import { auth, isAllowedEmail } from "@/auth";
+import { redactSensitiveText } from "@/lib/ai/error-policy";
 import { saveMarkdownToGitHub } from "@/lib/server/github-markdown";
 
 export const maxDuration = 90;
@@ -58,7 +59,16 @@ export async function POST(request: Request) {
     if (message.includes("SERVER_CONFIGURATION_MISSING")) {
       return json({ error: "GitHub保存の設定が未完了です" }, 503);
     }
-    console.error("GitHub Markdown save failed", error);
+    if (error instanceof Error && ["AbortError", "TimeoutError"].includes(error.name)) {
+      return json({ error: "GitHub保存がタイムアウトしました" }, 504);
+    }
+    if (/rate limit/i.test(message)) {
+      return json({ error: "GitHub APIの利用上限に達しています" }, 429);
+    }
+    console.error(
+      "[github-markdown-save]",
+      redactSensitiveText(error instanceof Error ? `${error.name}: ${message}` : "Unknown error"),
+    );
     return json({ error: "GitHub保存に失敗しました" }, 502);
   }
 }

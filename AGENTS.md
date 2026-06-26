@@ -256,6 +256,18 @@ src/
   - 保存テストコマンド: `npm run test:github`
   - `check:secrets` にGitHub PAT検出を追加
   - 2026-06-27: 実GitHub保存成功。日本時間の `reports/2026-06-27/` に `.md` 作成確認済み
+- [x] **第1〜第5段階 再監査（2026-06-27）**
+  - 認証・3AI接続・比較統合・Drive実保存・GitHub実保存のコードと記録を再確認
+  - 第1〜第5段階は実装完了。Gemini生成のみ外部利用枠超過の継続課題
+- [x] **第6段階: エラー処理・料金制御・テスト**
+  - AIエラーを設定不備・利用枠・タイムアウト・認証・サービス停止へ分類
+  - APIキー・GitHub PATをサーバーログで伏字化
+  - 3AIの最大出力量を各4000トークンに統一
+  - 許可ユーザーごとにResearchを既定1時間6回・30秒間隔へ制限
+  - Google Drive / GitHub保存のタイムアウト・利用枠エラーを分離
+  - `npm run test:unit` を追加（5件成功）
+  - `npm run verify` に秘密情報検査・lint・単体テスト・本番ビルドを統合
+  - 手順書: `docs/ERROR_COST_TESTING.md`
 
 ### 未着手 / 要確認
 
@@ -270,6 +282,7 @@ src/
   - `npm run test:github` で `.md` 作成を確認済み
   - 保存フォルダの日付を日本時間（`Asia/Tokyo`）へ統一済み
 - [ ] Vercelでは `GITHUB_REPORT_TOKEN` をSensitive環境変数に設定
+- [ ] Vercelへ第6段階の料金制御環境変数を設定
 - [x] 本番 API（OpenAI / Gemini / Claude）接続コード
 - [ ] `research-workbench` との同期方針（凍結 vs マージ）
 - [ ] GitHub Pages / Vercel 等の検討（現状 Surge 前提）

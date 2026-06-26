@@ -3,6 +3,7 @@ import "server-only";
 import Anthropic from "@anthropic-ai/sdk";
 import { buildResearchPrompt } from "@/lib/ai/prompt";
 import { requireSecret } from "@/lib/server/env";
+import { getAiMaxOutputTokens } from "@/lib/server/research-cost-control";
 import type { ProviderResearchResult } from "@/types/research-api";
 import type { ResearchMode } from "@/types/research";
 
@@ -24,7 +25,7 @@ export async function researchWithClaude(
   const response = await client.messages.create(
     {
       model,
-      max_tokens: 5000,
+      max_tokens: getAiMaxOutputTokens(),
       messages: [
         {
           role: "user",

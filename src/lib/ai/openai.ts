@@ -3,6 +3,7 @@ import "server-only";
 import OpenAI from "openai";
 import { buildResearchPrompt } from "@/lib/ai/prompt";
 import { requireSecret } from "@/lib/server/env";
+import { getAiMaxOutputTokens } from "@/lib/server/research-cost-control";
 import type { ProviderResearchResult } from "@/types/research-api";
 import type { ResearchMode } from "@/types/research";
 
@@ -24,6 +25,7 @@ export async function researchWithOpenAI(
   const response = await client.responses.create(
     {
       model,
+      max_output_tokens: getAiMaxOutputTokens(),
       tools: [{ type: "web_search", search_context_size: "medium" }],
       input: buildResearchPrompt(brief, mode, "ChatGPT"),
     },

@@ -2,6 +2,7 @@ import "server-only";
 
 import { NextResponse } from "next/server";
 import { auth, isAllowedEmail } from "@/auth";
+import { redactSensitiveText } from "@/lib/ai/error-policy";
 import { saveFinalReportToGoogleDrive } from "@/lib/server/google-drive";
 
 export const maxDuration = 90;
@@ -62,7 +63,13 @@ export async function POST(request: Request) {
     if (message.includes("SERVER_CONFIGURATION_MISSING")) {
       return json({ error: "Google Drive保存の設定が未完了です" }, 503);
     }
-    console.error("Google Drive save failed", error);
+    if (error instanceof Error && ["AbortError", "TimeoutError"].includes(error.name)) {
+      return json({ error: "Google Drive保存がタイムアウトしました" }, 504);
+    }
+    console.error(
+      "[google-drive-save]",
+      redactSensitiveText(error instanceof Error ? `${error.name}: ${message}` : "Unknown error"),
+    );
     return json({ error: "Google Drive保存に失敗しました" }, 502);
   }
 }

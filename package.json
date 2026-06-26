@@ -11,7 +11,8 @@
     "test:ai": "node scripts/test-ai-connectivity.mjs",
     "test:drive": "node scripts/test-google-drive-save.mjs",
     "test:github": "node scripts/test-github-markdown-save.mjs",
-    "verify": "npm run check:secrets && npm run lint && npm run build"
+    "test:unit": "tsc -p tsconfig.test.json && node --test --test-isolation=none .test-dist/tests/provider-error-policy.test.js .test-dist/tests/research-cost-control.test.js",
+    "verify": "npm run check:secrets && npm run lint && npm run test:unit && npm run build"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "0.105.0",

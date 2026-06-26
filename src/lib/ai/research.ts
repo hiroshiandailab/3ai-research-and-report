@@ -5,6 +5,10 @@ import { buildIntegratedComparison } from "@/lib/ai/comparison";
 import { researchWithGemini } from "@/lib/ai/gemini";
 import { researchWithOpenAI } from "@/lib/ai/openai";
 import {
+  classifyProviderError,
+  redactSensitiveText,
+} from "@/lib/ai/error-policy";
+import {
   AI_TOOLS,
   SOURCE_TOOL_LABELS,
   type AiToolId,
@@ -40,29 +44,12 @@ function configuredModel(provider: AiToolId): string {
   return process.env[envKey] || DEFAULT_MODELS[provider];
 }
 
-function publicErrorMessage(error: unknown): string {
-  if (
-    error instanceof Error &&
-    error.message.startsWith("SERVER_CONFIGURATION_MISSING:")
-  ) {
-    return "サーバーのAPI設定が完了していません。管理者に確認してください。";
-  }
-  return "AIサービスとの通信に失敗しました。時間をおいて再実行してください。";
-}
-
-function redactSecrets(value: string): string {
-  return value
-    .replace(/\bsk-ant-[A-Za-z0-9_-]{10,}\b/g, "[REDACTED]")
-    .replace(/\bsk-[A-Za-z0-9_-]{10,}\b/g, "[REDACTED]")
-    .replace(/\bAIza[0-9A-Za-z_-]{10,}\b/g, "[REDACTED]");
-}
-
 function logProviderError(provider: AiToolId, error: unknown): void {
   const detail =
     error instanceof Error
       ? `${error.name}: ${error.message}`
       : "Unknown provider error";
-  console.error(`[research:${provider}] ${redactSecrets(detail)}`);
+  console.error(`[research:${provider}] ${redactSensitiveText(detail)}`);
 }
 
 function errorReport(provider: AiToolId, message: string): string {
@@ -97,7 +84,8 @@ export async function runProviderResearch(
       return;
     }
 
-    const message = publicErrorMessage(entry.reason);
+    const publicError = classifyProviderError(entry.reason);
+    const message = publicError.message;
     logProviderError(provider, entry.reason);
     results[provider] = {
       provider,

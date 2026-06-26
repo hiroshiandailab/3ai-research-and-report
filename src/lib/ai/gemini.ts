@@ -3,6 +3,7 @@ import "server-only";
 import { GoogleGenAI } from "@google/genai";
 import { buildResearchPrompt } from "@/lib/ai/prompt";
 import { requireSecret } from "@/lib/server/env";
+import { getAiMaxOutputTokens } from "@/lib/server/research-cost-control";
 import type { ProviderResearchResult } from "@/types/research-api";
 import type { ResearchMode } from "@/types/research";
 
@@ -21,6 +22,7 @@ export async function researchWithGemini(
     model,
     contents: buildResearchPrompt(brief, mode, "Gemini"),
     config: {
+      maxOutputTokens: getAiMaxOutputTokens(),
       tools: [{ googleSearch: {} }],
       abortSignal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
     },

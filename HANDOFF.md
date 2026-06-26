@@ -142,6 +142,11 @@ src/
 - [x] Google Drive保存の実Driveテスト（2026-06-27 `.docx` 作成確認済み）
 - [x] GitHub Markdown保存コード
 - [x] GitHub Markdown保存の実GitHubテスト（2026-06-27 `reports/2026-06-27/` に `.md` 作成確認済み）
+- [x] 第6段階: エラー処理・料金制御・単体テスト
+  - 3AI出力上限: 各4000トークン
+  - Research既定上限: 許可ユーザーごとに1時間6回・30秒間隔
+  - エラー分類・秘密値伏字・保存タイムアウト処理
+  - `npm run test:unit` 5件成功、`npm run verify` 成功
 
 ---
 
@@ -159,6 +164,9 @@ npm run build
 
 # 秘密情報・lint・本番ビルド
 npm run verify
+
+# 外部APIを呼ばない単体テスト
+npm run test:unit
 
 # 3社APIの最小ライブ通信
 npm run test:ai
@@ -225,6 +233,7 @@ git push origin main
 - [x] `hiroshiandailab@gmail.com` 側でGASを作成し、`.docx` Drive保存を実テスト
 - [x] 3AI比較・出典統合
 - [x] `GITHUB_REPORT_TOKEN` を設定し、GitHub Markdown保存を実テスト
+- [x] 第6段階のエラー処理・料金制御・単体テスト
 - [ ] `research-workbench` 側を 3ai と同期するか、レガシーとして凍結するか方針決定
 - [ ] Vercel本番プロジェクトの作成・環境変数設定（第7段階）
 
