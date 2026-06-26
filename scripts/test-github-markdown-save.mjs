@@ -14,8 +14,9 @@ if (!token) {
 }
 
 const startedAt = Date.now();
-const fileName = `github-markdown-save-test-${formatTimestamp(new Date())}.md`;
-const path = `${directory}/${new Date().toISOString().slice(0, 10)}/${fileName}`;
+const now = new Date();
+const fileName = `github-markdown-save-test-${formatTimestamp(now)}.md`;
+const path = `${directory}/${formatDate(now)}/${fileName}`;
 
 try {
   const response = await fetch(
@@ -104,6 +105,15 @@ function formatTimestamp(date) {
     }, {});
 
   return `${parts.year}${parts.month}${parts.day}-${parts.hour}${parts.minute}${parts.second}`;
+}
+
+function formatDate(date) {
+  return new Intl.DateTimeFormat("sv-SE", {
+    timeZone: "Asia/Tokyo",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
 }
 
 function encodeURIComponentPath(pathValue) {

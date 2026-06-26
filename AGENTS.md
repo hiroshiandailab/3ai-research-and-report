@@ -175,7 +175,7 @@ src/
 
 ## 作業状況
 
-**最終更新:** 2026-06-26
+**最終更新:** 2026-06-27
 **担当:** Codex
 
 ### 完了済み
@@ -255,6 +255,7 @@ src/
   - 手順書: `docs/GITHUB_MARKDOWN_SETUP.md`
   - 保存テストコマンド: `npm run test:github`
   - `check:secrets` にGitHub PAT検出を追加
+  - 2026-06-27: 実GitHub保存成功。日本時間の `reports/2026-06-27/` に `.md` 作成確認済み
 
 ### 未着手 / 要確認
 
@@ -264,10 +265,11 @@ src/
   - `hiroshiandailab@gmail.com` 側でGAS Webアプリを作成・デプロイ済み
   - `.env.local` に `GOOGLE_DRIVE_GAS_WEB_APP_URL` / `GOOGLE_DRIVE_GAS_SHARED_SECRET` を設定済み
   - `npm run test:drive` で `.docx` 作成を確認済み
-- [ ] **GitHub Markdown保存の実GitHubテスト**
-  - `.env.local` に `GITHUB_REPORT_TOKEN` を設定
-  - `npm run test:github` で `.md` 作成を確認
-  - Vercelでは `GITHUB_REPORT_TOKEN` をSensitive環境変数に設定
+- [x] **GitHub Markdown保存の実GitHubテスト**
+  - `.env.local` に `GITHUB_REPORT_TOKEN` を設定済み
+  - `npm run test:github` で `.md` 作成を確認済み
+  - 保存フォルダの日付を日本時間（`Asia/Tokyo`）へ統一済み
+- [ ] Vercelでは `GITHUB_REPORT_TOKEN` をSensitive環境変数に設定
 - [x] 本番 API（OpenAI / Gemini / Claude）接続コード
 - [ ] `research-workbench` との同期方針（凍結 vs マージ）
 - [ ] GitHub Pages / Vercel 等の検討（現状 Surge 前提）

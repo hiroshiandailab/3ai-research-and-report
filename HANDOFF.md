@@ -1,6 +1,6 @@
 # Research Workbench / 3AI Research & Report — 引き継ぎメモ
 
-最終更新: 2026-06-26
+最終更新: 2026-06-27
 対象読者: 別チャット・別担当者への引き継ぎ用
 
 ---
@@ -141,7 +141,7 @@ src/
 - [x] Google Drive保存用GAS連携コード
 - [x] Google Drive保存の実Driveテスト（2026-06-27 `.docx` 作成確認済み）
 - [x] GitHub Markdown保存コード
-- [ ] GitHub Markdown保存の実GitHubテスト（`GITHUB_REPORT_TOKEN` 設定後）
+- [x] GitHub Markdown保存の実GitHubテスト（2026-06-27 `reports/2026-06-27/` に `.md` 作成確認済み）
 
 ---
 
@@ -224,7 +224,7 @@ git push origin main
 - [ ] Geminiの利用枠有効化・生成再確認
 - [x] `hiroshiandailab@gmail.com` 側でGASを作成し、`.docx` Drive保存を実テスト
 - [x] 3AI比較・出典統合
-- [ ] `GITHUB_REPORT_TOKEN` を設定し、GitHub Markdown保存を実テスト
+- [x] `GITHUB_REPORT_TOKEN` を設定し、GitHub Markdown保存を実テスト
 - [ ] `research-workbench` 側を 3ai と同期するか、レガシーとして凍結するか方針決定
 - [ ] Vercel本番プロジェクトの作成・環境変数設定（第7段階）
 

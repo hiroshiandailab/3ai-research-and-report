@@ -40,8 +40,9 @@ export async function saveMarkdownToGitHub(
   const directory = normalizeDirectory(
     process.env.GITHUB_REPORT_DIR?.trim() || DEFAULT_DIR,
   );
-  const fileName = `${slugify(input.title || "3ai-research-report")}-${formatTimestamp(new Date())}.md`;
-  const path = `${directory}/${new Date().toISOString().slice(0, 10)}/${fileName}`;
+  const now = new Date();
+  const fileName = `${slugify(input.title || "3ai-research-report")}-${formatTimestamp(now)}.md`;
+  const path = `${directory}/${formatDate(now)}/${fileName}`;
 
   const response = await fetch(
     `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponentPath(path)}`,
@@ -124,6 +125,15 @@ function formatTimestamp(date: Date): string {
     }, {});
 
   return `${parts.year}${parts.month}${parts.day}-${parts.hour}${parts.minute}${parts.second}`;
+}
+
+function formatDate(date: Date): string {
+  return new Intl.DateTimeFormat("sv-SE", {
+    timeZone: "Asia/Tokyo",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
 }
 
 function encodeURIComponentPath(path: string): string {
