@@ -92,6 +92,12 @@ AUTH_ALLOWED_EMAILS
 
 - `docs/GOOGLE_DRIVE_GAS_SETUP.md`
 
+## 7. GitHub Markdown保存用PAT
+
+`[Markdown生成]` からGitHubへ `.md` 保存する設定は、次の手順書を参照してください。
+
+- `docs/GITHUB_MARKDOWN_SETUP.md`
+
 ## 漏えいが疑われる場合
 
 1. 該当キーを各社コンソールですぐ失効する

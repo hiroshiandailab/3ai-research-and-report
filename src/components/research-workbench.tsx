@@ -45,6 +45,13 @@ interface GoogleDriveSaveResponse {
   error?: string;
 }
 
+interface GitHubMarkdownSaveResponse {
+  path?: string;
+  url?: string;
+  commitUrl?: string;
+  error?: string;
+}
+
 function StepHeader({
   step,
   label,
@@ -203,6 +210,7 @@ export function ResearchWorkbench({ userEmail }: { userEmail: string }) {
   const [selectedSummaryIds, setSelectedSummaryIds] = useState<Set<string>>(new Set());
   const [adoptDraft, setAdoptDraft] = useState("");
   const [isSavingDrive, setIsSavingDrive] = useState(false);
+  const [isSavingMarkdown, setIsSavingMarkdown] = useState(false);
   const finalReportRef = useRef<HTMLTextAreaElement>(null);
 
   const cardsA = cardsByLayer("A");
@@ -321,11 +329,44 @@ export function ResearchWorkbench({ userEmail }: { userEmail: string }) {
     }
   }
 
+  async function saveMarkdownToGitHub(markdown: string) {
+    const response = await fetch("/api/save/github-markdown", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: "3AI Research Report",
+        markdown,
+      }),
+      cache: "no-store",
+    });
+
+    const result = (await response.json()) as GitHubMarkdownSaveResponse;
+    if (!response.ok) {
+      throw new Error(result.error || "GitHub保存に失敗しました");
+    }
+    return result;
+  }
+
   async function handleMarkdownGenerate() {
     const md = buildFullMarkdownReport(state);
     await copyMarkdownToClipboard(md);
     downloadMarkdown(md, undefined);
-    flash("Markdownを生成してコピー・保存しました");
+
+    setIsSavingMarkdown(true);
+    try {
+      const saved = await saveMarkdownToGitHub(md);
+      flash(
+        saved.path
+          ? `Markdownを生成し、GitHubへ保存しました: ${saved.path}`
+          : "Markdownを生成し、GitHubへ保存しました",
+      );
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "GitHub保存に失敗しました";
+      flash(`Markdownは生成しました。${message}`);
+    } finally {
+      setIsSavingMarkdown(false);
+    }
   }
 
   function handleClearAll() {
@@ -624,9 +665,10 @@ export function ResearchWorkbench({ userEmail }: { userEmail: string }) {
                   type="button"
                   size="lg"
                   className="bg-[#0F766E] px-6 hover:bg-[#115E59]"
+                  disabled={isSavingMarkdown}
                   onClick={handleMarkdownGenerate}
                 >
-                  Markdown生成
+                  {isSavingMarkdown ? "GitHub保存中…" : "Markdown生成"}
                 </Button>
               </div>
             </div>

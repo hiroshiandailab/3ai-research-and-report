@@ -1,6 +1,6 @@
 # Research Workbench / 3AI Research & Report — 引き継ぎメモ
 
-最終更新: 2026-06-25
+最終更新: 2026-06-26
 対象読者: 別チャット・別担当者への引き継ぎ用
 
 ---
@@ -33,6 +33,7 @@
 - **3AI**: OpenAI Responses + Web Search / Claude Messages + Web Search / Gemini + Google Search
 - **秘密情報**: `.env.local` / Vercel Sensitive変数のみ。`NEXT_PUBLIC_*_API_KEY`は禁止
 - **Google Drive保存**: Next.js Route Handler → GAS Webアプリ → Google Drive `.docx`
+- **GitHub Markdown保存**: Next.js Route Handler → GitHub REST API → `reports/YYYY-MM-DD/*.md`
 - **Node**: `npm install` → `npm run dev`（開発） / `npm run build`（サーバー版ビルド）
 
 ---
@@ -139,6 +140,8 @@ src/
   - Gemini失敗時も成功したAI回答だけで比較可能
 - [x] Google Drive保存用GAS連携コード
 - [ ] Google Drive保存の実Driveテスト（GAS WebアプリURL・共有シークレット設定後）
+- [x] GitHub Markdown保存コード
+- [ ] GitHub Markdown保存の実GitHubテスト（`GITHUB_REPORT_TOKEN` 設定後）
 
 ---
 
@@ -162,6 +165,9 @@ npm run test:ai
 
 # Google Drive .docx保存テスト
 npm run test:drive
+
+# GitHub Markdown保存テスト
+npm run test:github
 ```
 
 Google OAuth callback:
@@ -218,6 +224,7 @@ git push origin main
 - [ ] Geminiの利用枠有効化・生成再確認
 - [ ] `hiroshiandailab@gmail.com` 側でGASを作成し、`.docx` Drive保存を実テスト
 - [x] 3AI比較・出典統合
+- [ ] `GITHUB_REPORT_TOKEN` を設定し、GitHub Markdown保存を実テスト
 - [ ] `research-workbench` 側を 3ai と同期するか、レガシーとして凍結するか方針決定
 - [ ] Vercel本番プロジェクトの作成・環境変数設定（第7段階）
 

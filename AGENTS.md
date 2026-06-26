@@ -175,7 +175,7 @@ src/
 
 ## 作業状況
 
-**最終更新:** 2026-06-25
+**最終更新:** 2026-06-26
 **担当:** Codex
 
 ### 完了済み
@@ -246,6 +246,14 @@ src/
   - 成功したAI回答から「共通点」「相違点」「採用候補」「統合出典」「注意点」をCompareへ生成
   - Gemini失敗時もOpenAI / Claudeなど成功分で比較を作成
   - 「共通点をAI共通まとめへ反映」はCompareの採用候補・共通点をカード化し、出典URLも保持
+- [x] **第5段階: GitHub Markdown保存 実装**
+  - `/api/save/github-markdown` を認証必須Route Handlerとして追加
+  - `[Markdown生成]` 後にGitHub REST APIへ `.md` を保存
+  - 保存先初期値: `hiroshiandailab/3ai-research-and-report` の `reports/YYYY-MM-DD/`
+  - PATは `GITHUB_REPORT_TOKEN` としてサーバー環境変数のみで保持
+  - 手順書: `docs/GITHUB_MARKDOWN_SETUP.md`
+  - 保存テストコマンド: `npm run test:github`
+  - `check:secrets` にGitHub PAT検出を追加
 
 ### 未着手 / 要確認
 
@@ -255,11 +263,10 @@ src/
   - `hiroshiandailab@gmail.com` 側でGAS Webアプリを作成・デプロイ
   - `.env.local` に `GOOGLE_DRIVE_GAS_WEB_APP_URL` / `GOOGLE_DRIVE_GAS_SHARED_SECRET` を設定
   - `npm run test:drive` で `.docx` 作成を確認
-- [ ] **STEP3 `[Markdown生成]` → GitHub 保存の実装**
-  - 形式: `.md`
-  - 手段: GitHub REST API + PAT（ユーザーが localStorage に設定）
-  - 保存先: `hiroshiandailab/3ai-research-and-report`
-  - 目的: 変更履歴の追跡・バージョン管理
+- [ ] **GitHub Markdown保存の実GitHubテスト**
+  - `.env.local` に `GITHUB_REPORT_TOKEN` を設定
+  - `npm run test:github` で `.md` 作成を確認
+  - Vercelでは `GITHUB_REPORT_TOKEN` をSensitive環境変数に設定
 - [x] 本番 API（OpenAI / Gemini / Claude）接続コード
 - [ ] `research-workbench` との同期方針（凍結 vs マージ）
 - [ ] GitHub Pages / Vercel 等の検討（現状 Surge 前提）

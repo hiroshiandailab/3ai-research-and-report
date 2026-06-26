@@ -17,6 +17,8 @@ const patterns = [
   { name: "OpenAI API key", regex: /\bsk-[A-Za-z0-9_-]{20,}\b/g },
   { name: "Anthropic API key", regex: /\bsk-ant-[A-Za-z0-9_-]{20,}\b/g },
   { name: "Google API key", regex: /\bAIza[0-9A-Za-z_-]{20,}\b/g },
+  { name: "GitHub classic token", regex: /\bgh[pousr]_[A-Za-z0-9_]{30,}\b/g },
+  { name: "GitHub fine-grained token", regex: /\bgithub_pat_[A-Za-z0-9_]{40,}\b/g },
   { name: "Google OAuth secret", regex: /\bGOCSPX-[A-Za-z0-9_-]{20,}\b/g },
   {
     name: "Auth secret assignment",
