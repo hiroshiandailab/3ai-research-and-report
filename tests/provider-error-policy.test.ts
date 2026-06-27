@@ -25,6 +25,10 @@ test("classifies configuration, quota, timeout, and authentication errors", () =
     "TIMEOUT",
   );
   assert.equal(
+    classifyProviderError(new Error("Request was aborted.")).code,
+    "TIMEOUT",
+  );
+  assert.equal(
     classifyProviderError(
       Object.assign(new Error("unauthorized"), { status: 401 }),
     ).code,

@@ -58,7 +58,13 @@ export function classifyProviderError(error: unknown): PublicProviderError {
   if (
     detail.name === "AbortError" ||
     detail.name === "TimeoutError" ||
-    includesAny(normalized, ["timeout", "timed out", "deadline exceeded"])
+    includesAny(normalized, [
+      "timeout",
+      "timed out",
+      "deadline exceeded",
+      "request was aborted",
+      "request aborted",
+    ])
   ) {
     return result("TIMEOUT", true);
   }

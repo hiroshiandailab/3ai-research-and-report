@@ -1,6 +1,6 @@
 # Research Workbench / 3AI Research & Report — 引き継ぎメモ
 
-最終更新: 2026-06-27
+最終更新: 2026-06-28
 対象読者: 別チャット・別担当者への引き継ぎ用
 
 ---
@@ -133,7 +133,7 @@ src/
 - [x] **本番3AI API接続コード**
 - [x] Google OAuth設定・許可アカウントでのログイン確認
 - [x] OpenAI / Claudeのライブ通信確認
-- [ ] Gemini生成確認（APIキーは有効、2026-06-27時点も利用枠超過）
+- [x] Gemini生成確認（2026-06-28、ローカル・Vercel本番とも成功）
 - [x] 3AI比較・出典統合（第3段階）
   - Compareに「共通点」「相違点」「採用候補」「統合出典」「注意点」を生成
   - Markdownリンク形式の出典URLを抽出・重複統合
@@ -152,7 +152,9 @@ src/
   - Productionへ必須13環境変数をSensitive登録
   - Google OAuth本番コールバック追加・許可アカウントでログイン成功
   - PC / スマートフォン表示確認
-  - VercelからOpenAI / Claude実通信成功、Geminiは利用枠超過を安全に表示
+  - VercelからOpenAI / Claude / Geminiの実通信成功
+  - Gemini用プロジェクトを請求先へ接続し、2,000円のプリペイドを購入（オートチャージOFF）
+  - ChatGPTのWeb検索が90秒で中断される事象を確認し、待機上限を180秒へ延長
 
 ---
 
@@ -236,7 +238,7 @@ git push origin main
 - [x] Vercel本番プロジェクトの作成・公開（第7段階）
 - [x] 本番 API（OpenAI / Gemini / Claude）接続コード
 - [x] Google OAuth・OpenAI・Claudeのローカル実通信確認
-- [ ] Geminiの利用枠有効化・生成再確認
+- [x] Geminiの利用枠有効化・生成再確認
 - [x] `hiroshiandailab@gmail.com` 側でGASを作成し、`.docx` Drive保存を実テスト
 - [x] 3AI比較・出典統合
 - [x] `GITHUB_REPORT_TOKEN` を設定し、GitHub Markdown保存を実テスト

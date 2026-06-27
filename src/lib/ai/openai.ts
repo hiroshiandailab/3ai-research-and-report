@@ -8,7 +8,7 @@ import type { ProviderResearchResult } from "@/types/research-api";
 import type { ResearchMode } from "@/types/research";
 
 const DEFAULT_MODEL = "gpt-5.5";
-const REQUEST_TIMEOUT_MS = 90_000;
+const REQUEST_TIMEOUT_MS = 180_000;
 
 export async function researchWithOpenAI(
   brief: string,

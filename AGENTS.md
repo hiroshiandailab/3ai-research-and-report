@@ -39,7 +39,7 @@ npm run dev
 - **既存 Surge URL へデプロイしない:** https://hiroshi-tsutsumi-202605-workspace.surge.sh/（`research-workbench` 用）
 - Surge版はモックとして凍結し、**今後は再デプロイしない**
 - 本番公開先は第7段階で作成するVercelプロジェクト
-- **3AI接続・本番公開済み** — OpenAI / Claude成功、Geminiは利用枠超過の継続課題
+- **3AI接続・本番公開済み** — OpenAI / Claude / Geminiの実通信を確認済み
 - 変更は **最小スコープ** — 依頼外のリファクタ・UI 全面変更・依存追加はしない
 - PowerShell では `&&` 不可 → `;` を使う
 
@@ -175,7 +175,7 @@ src/
 
 ## 作業状況
 
-**最終更新:** 2026-06-27
+**最終更新:** 2026-06-28
 **担当:** Codex
 
 ### 完了済み
@@ -226,13 +226,19 @@ src/
 - [x] **ローカル認証・実API通信確認**
   - Google OAuth Webクライアントを設定し、許可アカウントでログイン成功
   - `.env.local` の認証情報・3社APIキーを秘密情報検査済み
-  - OpenAI / Claudeは実通信とWeb検索を確認
-  - Gemini APIキーは有効。生成は利用枠超過（429）のため保留
+  - OpenAI / Claude / Geminiの実通信とWeb検索を確認
   - 3社をアプリ経由で実行し、成功・失敗の個別表示を確認
   - 各AI通信を90秒で打ち切り、SDKの自動再試行を抑制
-- [x] **Gemini利用枠再確認（2026-06-27）**
-  - `npm run test:ai` でOpenAI / Claudeは成功
-  - GeminiはAPIキー有効、生成は引き続き利用枠超過（`KEY_OK_QUOTA_BLOCKED`）
+- [x] **Gemini利用枠有効化（2026-06-28）**
+  - Gemini用 `AI-Report` プロジェクトをGoogle Cloud請求先へ接続
+  - プリペイドクレジット `2,000円` を購入し、オートチャージはOFF
+  - `npm run test:ai` でOpenAI / Claude / Geminiの3社すべて成功
+  - Vercel本番のGeminiタブで実レポート生成を確認
+- [x] **Vercel本番ChatGPTタイムアウト修正（2026-06-28）**
+  - VercelログでOpenAI Responses APIが90秒で中断されたことを確認
+  - OpenAIのWeb検索待機上限を90秒から180秒へ延長
+  - `Request was aborted` をタイムアウトへ分類し、単体テストを追加
+  - `npm run verify` 相当の検査と本番ビルドに成功
 - [x] **Google Drive保存（GAS連携）実装**
   - `/api/save/google-drive` を認証必須Route Handlerとして追加
   - `[最終本文を作成]` 後にGoogle Drive保存を実行
@@ -258,7 +264,7 @@ src/
   - 2026-06-27: 実GitHub保存成功。日本時間の `reports/2026-06-27/` に `.md` 作成確認済み
 - [x] **第1〜第5段階 再監査（2026-06-27）**
   - 認証・3AI接続・比較統合・Drive実保存・GitHub実保存のコードと記録を再確認
-  - 第1〜第5段階は実装完了。Gemini生成のみ外部利用枠超過の継続課題
+  - 第1〜第5段階は実装完了。Gemini生成も2026-06-28に確認済み
 - [x] **第6段階: エラー処理・料金制御・テスト**
   - AIエラーを設定不備・利用枠・タイムアウト・認証・サービス停止へ分類
   - APIキー・GitHub PATをサーバーログで伏字化
@@ -276,13 +282,13 @@ src/
   - OAuthクライアント `AI-Report-Web` に本番生成元・コールバックURLを追加
   - `hiroshiandailab@gmail.com` で本番Googleログイン成功
   - PC（1440x900）・スマートフォン（390x844）表示確認済み
-  - VercelからOpenAI / Claude実通信成功、Gemini利用枠エラーの安全な表示を確認
+  - VercelからOpenAI / Claude / Geminiの実通信を確認
   - 手順書: `docs/VERCEL_DEPLOYMENT.md`
 
 ### 未着手 / 要確認
 
 - [x] VercelへGoogle OAuth・3社APIの環境変数を設定
-- [ ] Geminiの課金・利用枠を有効化し、生成成功を再確認
+- [x] Geminiの課金・利用枠を有効化し、生成成功を再確認
 - [x] **Google Drive保存の実Driveテスト**
   - `hiroshiandailab@gmail.com` 側でGAS Webアプリを作成・デプロイ済み
   - `.env.local` に `GOOGLE_DRIVE_GAS_WEB_APP_URL` / `GOOGLE_DRIVE_GAS_SHARED_SECRET` を設定済み
