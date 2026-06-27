@@ -39,7 +39,7 @@ npm run dev
 - **既存 Surge URL へデプロイしない:** https://hiroshi-tsutsumi-202605-workspace.surge.sh/（`research-workbench` 用）
 - Surge版はモックとして凍結し、**今後は再デプロイしない**
 - 本番公開先は第7段階で作成するVercelプロジェクト
-- **3AI接続コード実装済み** — APIキー設定とライブ通信確認は要対応
+- **3AI接続・本番公開済み** — OpenAI / Claude成功、Geminiは利用枠超過の継続課題
 - 変更は **最小スコープ** — 依頼外のリファクタ・UI 全面変更・依存追加はしない
 - PowerShell では `&&` 不可 → `;` を使う
 
@@ -268,10 +268,20 @@ src/
   - `npm run test:unit` を追加（5件成功）
   - `npm run verify` に秘密情報検査・lint・単体テスト・本番ビルドを統合
   - 手順書: `docs/ERROR_COST_TESTING.md`
+- [x] **第7段階: Vercel本番公開（2026-06-27）**
+  - 本番URL: https://3ai-research-and-report.vercel.app
+  - GitHub `main` とVercelプロジェクトを連携
+  - 必須13環境変数をSensitive・Productionのみで登録
+  - Google Cloudプロジェクト `ai-report-500313` で `hiroshiandailab@gmail.com` をオーナーへ追加
+  - OAuthクライアント `AI-Report-Web` に本番生成元・コールバックURLを追加
+  - `hiroshiandailab@gmail.com` で本番Googleログイン成功
+  - PC（1440x900）・スマートフォン（390x844）表示確認済み
+  - VercelからOpenAI / Claude実通信成功、Gemini利用枠エラーの安全な表示を確認
+  - 手順書: `docs/VERCEL_DEPLOYMENT.md`
 
 ### 未着手 / 要確認
 
-- [ ] VercelへGoogle OAuth・3社APIの環境変数を設定
+- [x] VercelへGoogle OAuth・3社APIの環境変数を設定
 - [ ] Geminiの課金・利用枠を有効化し、生成成功を再確認
 - [x] **Google Drive保存の実Driveテスト**
   - `hiroshiandailab@gmail.com` 側でGAS Webアプリを作成・デプロイ済み
@@ -281,11 +291,11 @@ src/
   - `.env.local` に `GITHUB_REPORT_TOKEN` を設定済み
   - `npm run test:github` で `.md` 作成を確認済み
   - 保存フォルダの日付を日本時間（`Asia/Tokyo`）へ統一済み
-- [ ] Vercelでは `GITHUB_REPORT_TOKEN` をSensitive環境変数に設定
-- [ ] Vercelへ第6段階の料金制御環境変数を設定
+- [x] Vercelで `GITHUB_REPORT_TOKEN` をSensitive環境変数に設定
+- [x] Vercelへ第6段階の料金制御環境変数を設定
 - [x] 本番 API（OpenAI / Gemini / Claude）接続コード
 - [ ] `research-workbench` との同期方針（凍結 vs マージ）
-- [ ] GitHub Pages / Vercel 等の検討（現状 Surge 前提）
+- [x] 本番公開先としてVercelを採用
 
 ### 直近の作業メモ（Cursor 側）
 

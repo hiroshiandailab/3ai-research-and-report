@@ -147,6 +147,12 @@ src/
   - Research既定上限: 許可ユーザーごとに1時間6回・30秒間隔
   - エラー分類・秘密値伏字・保存タイムアウト処理
   - `npm run test:unit` 5件成功、`npm run verify` 成功
+- [x] 第7段階: Vercel本番公開
+  - URL: https://3ai-research-and-report.vercel.app
+  - Productionへ必須13環境変数をSensitive登録
+  - Google OAuth本番コールバック追加・許可アカウントでログイン成功
+  - PC / スマートフォン表示確認
+  - VercelからOpenAI / Claude実通信成功、Geminiは利用枠超過を安全に表示
 
 ---
 
@@ -182,7 +188,7 @@ Google OAuth callback:
 
 ```text
 http://localhost:3000/api/auth/callback/google
-https://<Vercel本番ドメイン>/api/auth/callback/google
+https://3ai-research-and-report.vercel.app/api/auth/callback/google
 ```
 
 ### GitHub
@@ -209,7 +215,8 @@ git push origin main
 6. **細部** — Art デフォルト、文言・余白調整
 7. **3ai モック** — `research-workbench` をコピー → `3ai-research-and-report`、タイトル・deploy URL・モーダル文言差分
 8. **GitHub** — `hiroshiandailab/3ai-research-and-report` 作成・push 済み
-9. **Surge 新 URL** — ローカル build 成功。**本番デプロイはユーザー確認待ちの可能性あり**（要確認）
+9. **Surge 新 URL** — モック版として公開確認済み。以後は凍結
+10. **Vercel本番** — Production公開・Googleログイン・3AI実通信確認済み
 
 ---
 
@@ -226,7 +233,7 @@ git push origin main
 ## 10. 次にやりそうなこと（未確定）
 
 - [x] Surgeモック版へのデプロイ確認
-- [ ] Vercel本番プロジェクトの作成・公開（第7段階）
+- [x] Vercel本番プロジェクトの作成・公開（第7段階）
 - [x] 本番 API（OpenAI / Gemini / Claude）接続コード
 - [x] Google OAuth・OpenAI・Claudeのローカル実通信確認
 - [ ] Geminiの利用枠有効化・生成再確認
@@ -235,12 +242,13 @@ git push origin main
 - [x] `GITHUB_REPORT_TOKEN` を設定し、GitHub Markdown保存を実テスト
 - [x] 第6段階のエラー処理・料金制御・単体テスト
 - [ ] `research-workbench` 側を 3ai と同期するか、レガシーとして凍結するか方針決定
-- [ ] Vercel本番プロジェクトの作成・環境変数設定（第7段階）
+- [x] Vercel本番プロジェクトの作成・環境変数設定（第7段階）
 
 ### Googleアカウント移行メモ（2026-06-25）
 
 - `hiroshiandailab@gmail.com` を追加済み
-- メイン `h@hiroshitt.com` は、サブGmail側でGoogle Drive保存用GASを作成し動作確認後に外す方針
+- Google Cloudプロジェクト `ai-report-500313` のオーナーへ追加済み
+- `h@hiroshitt.com` はGoogle Drive・OAuth・本番ログイン確認後も現時点では残している
 
 ---
 
