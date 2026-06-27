@@ -199,6 +199,7 @@ src/
   - 新: `hiroshi-tsutsumi-202506-3ai-research-and-report.surge.sh`
 - [x] 新 Surge URL へ最新ビルドをデプロイし、PC・スマートフォン表示を確認
 - [x] STEP 2 と STEP 3 の重なりを解消し、ページ全体を縦スクロール表示へ修正
+- [x] ヘッダー下のSTEP 1〜3進行案内を削除（各STEP本体は変更なし）
 - [x] **第1段階: Next.jsサーバー化・認証**
   - `output: "export"` を解除し、Vercel向けサーバー構成へ変更
   - Auth.js + Google OAuthを追加

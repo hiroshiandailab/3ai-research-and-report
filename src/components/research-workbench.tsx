@@ -1,7 +1,7 @@
 "use client";
 
 import { LogOut } from "lucide-react";
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { signOutAction } from "@/app/actions/auth";
 import { AiReportsModal } from "@/components/ai-reports-modal";
 import { ResearchCardItem } from "@/components/research-card-item";
@@ -23,7 +23,6 @@ import {
 import { clearWorkspaceStorage } from "@/lib/research-storage";
 import { cn } from "@/lib/utils";
 import {
-  AI_TOOLS,
   BOARD_PANELS,
   WORKFLOW_STEPS,
   type AiToolId,
@@ -216,13 +215,6 @@ export function ResearchWorkbench({ userEmail }: { userEmail: string }) {
   const cardsA = cardsByLayer("A");
   const cardsB = cardsByLayer("B");
   const cardsC = cardsByLayer("C");
-
-  const researchDone = AI_TOOLS.some((t) => state.aiStatus[t] === "done");
-  const activeStep = useMemo(() => {
-    if (!researchDone) return 1;
-    if (cardsB.length === 0) return 2;
-    return 3;
-  }, [researchDone, cardsB.length]);
 
   function flash(msg: string) {
     setExportMessage(msg);
@@ -441,39 +433,6 @@ export function ResearchWorkbench({ userEmail }: { userEmail: string }) {
             </div>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-3">
-            {WORKFLOW_STEPS.map(({ step, label, guide }) => (
-              <div
-                key={step}
-                className={cn(
-                  "rounded-xl border px-4 py-3 transition-colors",
-                  activeStep === step
-                    ? "border-[#2563EB]/40 bg-[#EAF2F8]/60 shadow-[var(--rw-shadow)]"
-                    : "border-[#D8E2EC] bg-[#F5F8FB]/50",
-                  step === 1 && "cursor-pointer hover:border-[#2563EB]/30 hover:bg-white",
-                )}
-                onClick={step === 1 ? () => setReportsOpen(true) : undefined}
-                onKeyDown={
-                  step === 1
-                    ? (e) => {
-                        if (e.key === "Enter" || e.key === " ") {
-                          e.preventDefault();
-                          setReportsOpen(true);
-                        }
-                      }
-                    : undefined
-                }
-                role={step === 1 ? "button" : undefined}
-                tabIndex={step === 1 ? 0 : undefined}
-              >
-                <p className="text-[10px] font-medium uppercase tracking-wider text-[#64748B]">
-                  STEP {step}
-                </p>
-                <p className="mt-0.5 text-sm font-medium text-[#0F172A]">{label}</p>
-                <p className="mt-0.5 text-[11px] leading-snug text-[#64748B]">{guide}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </header>
 
