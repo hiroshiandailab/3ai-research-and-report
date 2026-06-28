@@ -243,7 +243,9 @@ git push origin main
 - [x] 3AI比較・出典統合
 - [x] `GITHUB_REPORT_TOKEN` を設定し、GitHub Markdown保存を実テスト
 - [x] 第6段階のエラー処理・料金制御・単体テスト
-- [ ] `research-workbench` 側を 3ai と同期するか、レガシーとして凍結するか方針決定
+- [x] `research-workbench` はレガシーとして凍結（2026-06-28決定）
+  - 今後の開発・修正・公開は `3ai-research-and-report` のみで行う
+  - 旧リポジトリ・旧Surge URLには同期・再デプロイしない
 - [x] Vercel本番プロジェクトの作成・環境変数設定（第7段階）
 
 ### Googleアカウント移行メモ（2026-06-25）

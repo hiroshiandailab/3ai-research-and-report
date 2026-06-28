@@ -301,7 +301,9 @@ src/
 - [x] Vercelで `GITHUB_REPORT_TOKEN` をSensitive環境変数に設定
 - [x] Vercelへ第6段階の料金制御環境変数を設定
 - [x] 本番 API（OpenAI / Gemini / Claude）接続コード
-- [ ] `research-workbench` との同期方針（凍結 vs マージ）
+- [x] `research-workbench` は過去版として凍結（2026-06-28決定）
+  - 今後の開発・修正・公開は `3ai-research-and-report` のみで行う
+  - 旧リポジトリ・旧Surge URLには同期・再デプロイしない
 - [x] 本番公開先としてVercelを採用
 
 ### 直近の作業メモ（Cursor 側）
